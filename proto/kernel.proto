@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package kernel;
+
+service KernelSyscall {
+    rpc HandleSyscall(SyscallRequest) returns (SyscallResponse);
+}
+
+message SyscallRequest {
+    string syscall = 1;
+    repeated string args = 2;
+}
+
+message SyscallResponse {
+    int32 status = 1;
+    string result = 2;
+    string error = 3;
+}
