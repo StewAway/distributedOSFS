@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package fs;
+
+service FileSystem {
+    rpc Create(CreateRequest) returns (CreateResponse);
+    rpc Mkdir(MkdirRequest) returns (MkdirResponse);
+    rpc Open(OpenRequest) returns (OpenResponse);
+    rpc Read(ReadRequest) returns (ReadResponse);
+    rpc Write(WriteRequest) returns (WriteResponse);
+    rpc Seek(SeekRequest) returns (SeekResponse);
+    rpc Listdir(ListdirRequest) returns (ListdirResponse);
+    rpc Remove(RemoveRequest) returns (RemoveResponse);
+}
+
+message CreateRequest { string path = 1; }
+message CreateResponse { int32 inum = 1; string error = 2; }
+
+message MkdirRequest { string path = 1; }
+message MkdirResponse { int32 inum = 1; string error = 2; }
+
+message OpenRequest { string filename = 1; }
+message OpenResponse { int32 fd = 1; string error = 2; }
+
+message ReadRequest { int32 fd = 1; int32 num_bytes = 2; }
+message ReadResponse { string data = 1; string error = 2; }
+
+message WriteRequest { int32 fd = 1; string data = 2; }
+message WriteResponse { bool success = 1; string error = 2; }
+
+message SeekRequest { int32 fd = 1; int32 offset = 2; int32 whence = 3; }
+message SeekResponse { bool success = 1; string error = 2; }
+
+message ListdirRequest { string path = 1; }
+message ListdirResponse { repeated string entries = 1; string error = 2; }
+
+message RemoveRequest { string path = 1; }
+message RemoveResponse { bool success = 1; string error = 2; }
