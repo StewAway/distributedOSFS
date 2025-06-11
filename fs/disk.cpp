@@ -3,8 +3,6 @@
 #include <vector>
 
 constexpr const char* DISK_IMAGE = "disk.img";
-constexpr int BLOCK_SIZE = 4096;
-constexpr int NUM_BLOCKS = 1024;
 
 static std::fstream disk_file;
 

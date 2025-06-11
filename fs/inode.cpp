@@ -9,7 +9,6 @@ constexpr int INODES_PER_BLOCK = disk_get_block_size() / sizeof(inode);
 static std::vector<bool> inode_bitmap; // bitmap for availability of inodes;
 
 void inode_init() {
-    disk_init();
     inode_bitmap.assign(NUM_INODES, false);
     inode_bitmap[0] = true;
     inode root;
