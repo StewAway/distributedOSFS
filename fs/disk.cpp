@@ -12,7 +12,7 @@ bool disk_init() {
         std::ofstream create(DISK_IMAGE, std::ios::out | std::ios::binary);
         std::vector<char> zeros(BLOCK_SIZE * NUM_BLOCKS, 0);
         create.write(zeros.data(), zeros.size());
-        crease.close();
+        create.close();
         disk_file.open(DISK_IMAGE, std::ios::in | std::ios::out | std::ios::binary);
     }
     return disk_file.is_open();

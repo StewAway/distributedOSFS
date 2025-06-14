@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "stat.h"
 typedef std::vector<std::string> DirList;
 
 void sfs_init();

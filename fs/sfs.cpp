@@ -2,6 +2,7 @@
 #include "disk.h"
 #include "inode.h"
 #include "dir.h"
+#include "block_manager.h"
 #include <map>
 #include <sstream>
 #include <cstring>
@@ -11,25 +12,8 @@ struct OpenFile {
     int offset;
 };
 
-static std::map<int, int> fd_table;
+static std::map<int, OpenFile> fd_table;
 static int next_fd = 3;
-static std::vector<bool> block_bitmap;
-
-static void bitmap_init() {
-    block_bitmap.assign(NUMBLOCK, false);
-    block_bitmap[0] = true; // superblock
-    for (int i = 1;i <= 16; ++i) block_bitmap[i] = true; // inodes blocks reserved
-}
-
-static int block_alloc() {
-    for (int i = 0;i < NUM_BLOCKS; ++i) {
-        if (!block_bitmap[i]) {
-            block_bitmap[i] = true;
-            return i;
-        }
-    }
-    return -1;
-}
 
 static int lookup_path(const std::string &path) {
     std::stringstream ss(path);
@@ -44,10 +28,35 @@ static int lookup_path(const std::string &path) {
     return cur;
 }
 
+static int get_data_block_index(Inode &ino, int file_block_index, bool allocate = false) {
+    if (file_block_index < NDIRECT) {
+        if (allocate && ino.direct[file_block_index] == 0)
+            ino.direct[file_block_index] = block_alloc();
+        return ino.direct[file_block_index];
+    } else {
+        if (ino.indirect == 0 && allocate) {
+            ino.indirect = block_alloc();
+            char zero[BLOCK_SIZE] = {0};
+            disk_write(ino.indirect, zero);
+        }
+        if (ino.indirect == 0) return 0;
+
+        uint32_t indirect_block[NINDIRECT];
+        disk_read(ino.indirect, (char*)indirect_block);
+
+        int idx = file_block_index - NDIRECT;
+        if (allocate && indirect_block[idx] == 0) {
+            indirect_block[idx] = block_alloc();
+            disk_write(ino.indirect, (char*)indirect_block);
+        }
+        return indirect_block[idx];
+    }
+}
+
 void sfs_init() {
     disk_init(); // Init disk image for allocating data 
     inode_init(); // inode bitmap init for allocating bitmap
-    bitmap_init(); // data block bitmap init for allocating data blocks
+    block_manager_init(); // data block bitmap init for allocating data blocks
 }
 
 int sfs_create(const std::string &path) {
@@ -62,7 +71,7 @@ int sfs_create(const std::string &path) {
     int bno = block_alloc();
     if (bno < 0) return -1;
     
-    inode ino{};
+    Inode ino{};
     ino.mode = 0100644;
     ino.size = 0;
     ino.direct[0] = bno;
@@ -84,7 +93,7 @@ int sfs_mkdir(const std::string &path) {
     int bno = block_alloc();
     if (bno < 0) return -1;
 
-    inode ino{};
+    Inode ino{};
     ino.mode = 0040755;
     ino.size = 0;
     ino.direct[0] = bno;
@@ -109,7 +118,7 @@ int sfs_read(int fd, char* buf, int size) {
     if (it == fd_table.end()) return -1;
     // 1. Getting fd for its inum and offset
     OpenFile &of = it->second;
-    inode ino{};
+    Inode ino{};
     
     if (!inode_read(of.inum, ino)) return -1;
     int total = 0;
@@ -125,7 +134,7 @@ int sfs_read(int fd, char* buf, int size) {
 
         int chunk = std::min(size - total, BLOCK_SIZE - inner_offset);
         chunk = std::min(chunk, (int)ino.size - of.offset);
-        std::memcpy(buf + total, blocklBuf + inner_offset, chunk);
+        std::memcpy(buf + total, blockBuf + inner_offset, chunk);
         of.offset += chunk;
         total += chunk;
     }
@@ -137,7 +146,7 @@ int sfs_write(int fd, char* buf, int size) {
     if (it == fd_table.end()) return -1;
     
     OpenFile &of = it->second;
-    inode ino{};
+    Inode ino{};
     if (!inode_read(of.inum, ino)) return -1;
     int total = 0;
     while (total < size) {
@@ -164,9 +173,9 @@ int sfs_write(int fd, char* buf, int size) {
 bool sfs_seek(int fd, int offset, int whence) {
     auto it = fd_table.find(fd);
     if (it == fd_table.end()) return false;
-    OpenFile &of = it->Second;
+    OpenFile &of = it->second;
     int newOffset;
-    inode ino{};
+    Inode ino{};
     if (!inode_read(of.inum, ino)) return false;
     switch (whence) {
         case 0: newOffset = offset; break;
@@ -195,21 +204,22 @@ int sfs_remove(const std::string &path) {
     int inum = dir_lookup(parent, name);
     if (inum < 0) return -1;
     
-    inode ino;
+    Inode ino;
     if (!inode_read(inum, ino)) return -1;
     for (int i = 0;i < NDIRECT; ++i)
         if (ino.direct[i])
-            block_bitmap[ino.direct[i]] = false; // deallocating/free data blocks
+            block_free(ino.direct[i]); // deallocating/free data blocks
     if (ino.indirect) {
         uint32_t indirect_block[NINDIRECT];
         disk_read(ino.indirect, (char*)indirect_block);
         for (int i = 0;i < NINDIRECT; ++i) {
-            if (indirect_block[i])
-                block_bitmap[indirect_block[i]] = false;
-        block_bitmap[ino.indirect] = false;
+            if (indirect_block[i] == 0) continue;
+            block_free(indirect_block[i]);
+        }
+        block_free(ino.indirect);
     }
     if (dir_remove(parent, name) < 0) return -1;
-    inode empty{};
+    Inode empty{};
     inode_write(inum, empty);
     return 0;
 }

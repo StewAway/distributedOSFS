@@ -1,9 +1,7 @@
 #pragma once
 
 #include <string>
-
-#define BLOCK_SIZE 4096
-#define NUM_BLOCKS 1024
+#include "stat.h"
 
 bool disk_init();
 bool disk_read(int block_num, char* buffer);
