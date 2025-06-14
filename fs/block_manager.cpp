@@ -7,13 +7,13 @@ std::vector<bool> block_bitmap;
 void block_manager_init() {
     block_bitmap.assign(NUM_BLOCKS, false);
 
-    for (int i = 0;i < RESERVED_BLOCKS, ++i) {
+    for (int i = 0;i < RESERVED_BLOCKS; ++i) {
         block_bitmap[i] = true;
     }
 }
 
 int block_alloc() {
-    for (int i = RESERVED_BLOCKS;i < NUM_BLOCKS, ++i) {
+    for (int i = RESERVED_BLOCKS;i < NUM_BLOCKS; ++i) {
         if (!block_bitmap[i]) {
             block_bitmap[i] = true;
             return i;

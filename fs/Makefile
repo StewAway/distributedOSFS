@@ -1,23 +1,30 @@
 CXX = g++
 CXXFLAGS = -std=c++17 `pkg-config --cflags grpc++ grpc protobuf`
 LDFLAGS = `pkg-config --libs grpc++ grpc protobuf`
-
-PROTO = filesystem.proto
-PROTO_OBJS = filesystem.pb.cc filesystem.grpc.pb.cc
-
-SRCS = fs_server.cpp sfs.cpp disk.cpp inode.cpp dir.cpp block_manager.cpp $(PROTO_OBJS)
-OBJS = $(SRCS:.cpp=.o)
+PROTO_SRCS = filesystem.pb.cc filesystem.grpc.pb.cc
 
 all: fs_server test_fs_client
 
-filesystem.pb.cc filesystem.grpc.pb.cc: $(PROTO)
-	protoc -I=. --cpp_out=. --grpc_out=. --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` $<
+fs_server: fs_server.cpp inode.o dir.o disk.o block_manager.o sfs.o $(PROTO_SRCS)
+	$(CXX) $(CXXFLAGS) -o $@ fs_server.cpp inode.o dir.o disk.o block_manager.o sfs.o $(PROTO_SRCS) $(LDFLAGS)
 
-fs_server: $(OBJS)
-	$(CXX) -o $@ $^ $(LDFLAGS)
+test_fs_client: test_fs_client.cpp $(PROTO_SRCS)
+	$(CXX) $(CXXFLAGS) -o $@ test_fs_client.cpp $(PROTO_SRCS) $(LDFLAGS)
 
-test_fs_client: test_fs_client.cpp filesystem.pb.cc filesystem.grpc.pb.cc
-	$(CXX) test_fs_client.cpp filesystem.pb.cc filesystem.grpc.pb.cc -o test_fs_client $(CXXFLAGS) $(LDFLAGS)
+inode.o: inode.cpp inode.h
+	$(CXX) $(CXXFLAGS) -c inode.cpp
+
+dir.o: dir.cpp dir.h
+	$(CXX) $(CXXFLAGS) -c dir.cpp
+
+disk.o: disk.cpp disk.h
+	$(CXX) $(CXXFLAGS) -c disk.cpp
+
+block_manager.o: block_manager.cpp block_manager.h
+	$(CXX) $(CXXFLAGS) -c block_manager.cpp
+
+sfs.o: sfs.cpp sfs.h
+	$(CXX) $(CXXFLAGS) -c sfs.cpp
 
 clean:
-	rm -f *.o *.pb.* fs_server test_fs_client disk.img
+	rm -f fs_server test_fs_client *.o

@@ -1,6 +1,7 @@
 #include "dir.h"
 #include "inode.h"
 #include "disk.h"
+#include "block_manager.h"
 #include <cstring>
 
 struct DirEntry {
@@ -131,11 +132,12 @@ int dir_list(int dir_inum, std::vector<std::string> &out) {
         if (!disk_read(dir_inode.direct[i], block)) return false;
 
         DirEntry* entries = (DirEntry*) block;
-        int num_entries = 4096 / sizeof(DirEntry);
+        int num_entries = BLOCK_SIZE / sizeof(DirEntry);
 
         for (int j = 0; j < num_entries; ++j) {
-            if (entries[j].inum != 0 && name == entries[j].name) {
-                inum_out = entries[j].inum;
+            if (entries[j].inum != 0) {
+                std::string name_out = entries[j].name;
+                out.push_back(name_out);
                 return true;
             }
         }
@@ -154,8 +156,9 @@ int dir_list(int dir_inum, std::vector<std::string> &out) {
             int num_entries = BLOCK_SIZE / sizeof(DirEntry);
 
             for (int j = 0; j < num_entries; ++j) {
-                if (entries[j].inum != 0 && name == entries[j].name) {
-                    inum_out = entries[j].inum;
+                if (entries[j].inum != 0) {
+                    std::string name_out = entries[j].name;
+                    out.push_back(name_out);
                     return true;
                 }
             }
@@ -179,7 +182,7 @@ int dir_remove(int dir_inum, const std::string &name) {
         int num_entries = BLOCK_SIZE / sizeof(DirEntry);
 
         for (int j = 0;j < num_entries; ++j) {
-            if (entries[j].inum != 0 && strcmp(name, entries[j].name) == 0) {
+            if (entries[j].inum != 0 && name == entries[j].name) {
                 entries[j].inum = 0;
                 std::memset(entries[j].name, 0, sizeof(entries[j].name));
                 return disk_write(dir_inode.direct[i], block);

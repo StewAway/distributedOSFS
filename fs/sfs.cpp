@@ -141,7 +141,7 @@ int sfs_read(int fd, char* buf, int size) {
     return total;
 }
 
-int sfs_write(int fd, char* buf, int size) {
+int sfs_write(int fd, const char* buf, int size) {
     auto it = fd_table.find(fd);
     if (it == fd_table.end()) return -1;
     
@@ -189,10 +189,13 @@ bool sfs_seek(int fd, int offset, int whence) {
     return true;
 }
 
-int sfs_listdir(const std::string &path, DirList &out) {
+std::vector<std::string> sfs_listdir(const std::string &path) {
+    std::vector<std::string> ans;
+
     int inum = lookup_path(path);
-    if (inum < 0) return -1;
-    return dir_list(inum, out);
+    if (inum < 0) return ans;
+    dir_list(inum, ans);
+    return ans;
 }
 
 int sfs_remove(const std::string &path) {
