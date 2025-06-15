@@ -2,28 +2,26 @@
 #include "stat.h"
 
 
-std::vector<bool> block_bitmap;
-
-void block_manager_init() {
-    block_bitmap.assign(NUM_BLOCKS, false);
-
+void block_manager_init(FSContext& ctx) {
+    ctx.block_bitmap.assign(NUM_BLOCKS, false);
+    // reserve superblock + inode-table blocks:
     for (int i = 0;i < RESERVED_BLOCKS; ++i) {
-        block_bitmap[i] = true;
+        ctx.block_bitmap[i] = true;
     }
 }
 
-int block_alloc() {
+int block_alloc(FSContext& ctx) {
     for (int i = RESERVED_BLOCKS;i < NUM_BLOCKS; ++i) {
-        if (!block_bitmap[i]) {
-            block_bitmap[i] = true;
+        if (!ctx.block_bitmap[i]) {
+            ctx.block_bitmap[i] = true;
             return i;
         }
     }
     return -1;
 }
 
-void block_free(int block_num) {
+void block_free(FSContext& ctx, int block_num) {
     if (block_num >= RESERVED_BLOCKS && block_num < NUM_BLOCKS) {
-        block_bitmap[block_num] = false;
+        ctx.block_bitmap[block_num] = false;
     }
 }
