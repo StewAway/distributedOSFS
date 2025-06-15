@@ -3,36 +3,47 @@ syntax = "proto3";
 package fs;
 
 service FileSystem {
-    rpc Create(CreateRequest) returns (CreateResponse);
-    rpc Mkdir(MkdirRequest) returns (MkdirResponse);
-    rpc Open(OpenRequest) returns (OpenResponse);
-    rpc Read(ReadRequest) returns (ReadResponse);
-    rpc Write(WriteRequest) returns (WriteResponse);
-    rpc Seek(SeekRequest) returns (SeekResponse);
-    rpc Listdir(ListdirRequest) returns (ListdirResponse);
-    rpc Remove(RemoveRequest) returns (RemoveResponse);
+    rpc Mount(MountRequest) returns (MountResponse);
+    rpc Create(FileRequest) returns (CreateResponse);
+    rpc Mkdir(FileRequest) returns (MkdirResponse);
+    rpc Open(FileRequest) returns (OpenResponse);
+    rpc Read(ReadRequestMulti) returns (ReadResponse);
+    rpc Write(WriteRequestMulti) returns (WriteResponse);
+    rpc Seek(SeekRequestMulti) returns (SeekResponse);
+    rpc Listdir(FileRequest) returns (ListdirResponse);
+    rpc Remove(FileRequest) returns (RemoveResponse);
 }
 
-message CreateRequest { string path = 1; }
+message MountRequest { string disk_image = 1; }
+message MountResponse { int32 mount_id = 1; string error = 2; }
+
+message FileRequest { int32 mount_id = 1; string path = 2; }
+
 message CreateResponse { int32 inum = 1; string error = 2; }
-
-message MkdirRequest { string path = 1; }
 message MkdirResponse { int32 inum = 1; string error = 2; }
-
-message OpenRequest { string filename = 1; }
 message OpenResponse { int32 fd = 1; string error = 2; }
 
-message ReadRequest { int32 fd = 1; int32 num_bytes = 2; }
-message ReadResponse { string data = 1; string error = 2; }
+message ReadRequestMulti { 
+    int32 mount_id = 1;
+    int32 fd = 2; 
+    int32 num_bytes = 3; 
+}
+message ReadResponse { bytes data = 1; string error = 2; }
 
-message WriteRequest { int32 fd = 1; string data = 2; }
+message WriteRequestMulti {
+    int32 mount_id = 1;
+    int32 fd = 2; 
+    bytes data = 3;
+}
 message WriteResponse { bool success = 1; string error = 2; }
 
-message SeekRequest { int32 fd = 1; int32 offset = 2; int32 whence = 3; }
+message SeekRequestMulti { 
+    int32 mount_id = 1;
+    int32 fd = 2; 
+    int32 offset = 3; 
+    int32 whence = 4; 
+}
 message SeekResponse { bool success = 1; string error = 2; }
 
-message ListdirRequest { string path = 1; }
 message ListdirResponse { repeated string entries = 1; string error = 2; }
-
-message RemoveRequest { string path = 1; }
 message RemoveResponse { bool success = 1; string error = 2; }
