@@ -6,6 +6,7 @@
 #include <map>
 #include <sstream>
 #include <cstring>
+#include <iostream>
 
 struct OpenFile {
     int inum;
@@ -194,21 +195,22 @@ std::vector<std::string> sfs_listdir(const std::string &path) {
 
     int inum = lookup_path(path);
     if (inum < 0) return ans;
+    std::cout<<"Printing sfs_listdir of inum "<<inum<<"\n";
     dir_list(inum, ans);
     return ans;
 }
 
-int sfs_remove(const std::string &path) {
+bool sfs_remove(const std::string &path) {
     auto pos = path.find_last_of('/');
     std::string dir = (pos == std::string::npos ? "/" : path.substr(0, pos));
     std::string name = path.substr(pos + 1);
     int parent = lookup_path(dir);
-    if (parent < 0) return -1;
+    if (parent < 0) return false;
     int inum = dir_lookup(parent, name);
-    if (inum < 0) return -1;
+    if (inum < 0) return false;
     
     Inode ino;
-    if (!inode_read(inum, ino)) return -1;
+    if (!inode_read(inum, ino)) return false;
     for (int i = 0;i < NDIRECT; ++i)
         if (ino.direct[i])
             block_free(ino.direct[i]); // deallocating/free data blocks
@@ -221,8 +223,8 @@ int sfs_remove(const std::string &path) {
         }
         block_free(ino.indirect);
     }
-    if (dir_remove(parent, name) < 0) return -1;
+    if (dir_remove(parent, name) < 0) return false;
     Inode empty{};
     inode_write(inum, empty);
-    return 0;
+    return true;
 }

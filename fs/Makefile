@@ -27,4 +27,4 @@ sfs.o: sfs.cpp sfs.h
 	$(CXX) $(CXXFLAGS) -c sfs.cpp
 
 clean:
-	rm -f fs_server test_fs_client *.o
+	rm -f fs_server test_fs_client *.o *.img

@@ -201,7 +201,9 @@ int main() {
 
   // 9) list again
   auto list2 = client.Listdir("/testdir");
-  std::cout << "List /testdir after remove: size=" << list2.size() << "\n";
+  std::cout << "9)List /testdir after remove: size=" << list2.size() << "\n";
+  std::cout << "List /testdir:\n";
+  for (auto &name : list2) std::cout << " - " << name << "\n";
 
   // 10) remove directory
   std::cout << "Remove dir → " 

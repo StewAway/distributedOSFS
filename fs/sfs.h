@@ -13,4 +13,4 @@ int sfs_read(int fd, char* buf, int size);
 int sfs_write(int fd, const char* buf, int size);
 bool sfs_seek(int fd, int offset, int whence);
 std::vector<std::string> sfs_listdir(const std::string &path);
-int sfs_remove(const std::string &path);
+bool sfs_remove(const std::string &path);
