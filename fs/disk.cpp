@@ -14,7 +14,7 @@ bool Disk::disk_init(const std::string& path) {
     const fs::path img_dir = fs::current_path() / "images";
     std::error_code ec;
     if (!fs::exists(img_dir, ec)) {
-        if (!fs::create_directories(img_dir, ec)); {
+        if (!fs::create_directories(img_dir, ec)) {
             std::cerr<<"[Disk] ERROR: could not create directory "<<img_dir<<": "<<ec.message()<<"\n";
             return false;
         }

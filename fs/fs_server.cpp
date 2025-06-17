@@ -147,12 +147,8 @@ public:
         }
         auto names = sfs_listdir(*ctx, req->path());
 
-        if (names.empty()) {
-            res->set_error("Directory not found or not a directory");
-        } else {
-            for (const auto& n: names) {
-                res->add_entries(n);
-            }
+        for (const auto& n: names) {
+            res->add_entries(n);
         }
         return Status::OK;
     }
