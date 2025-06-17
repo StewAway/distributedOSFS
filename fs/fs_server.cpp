@@ -48,13 +48,16 @@ class FileSystemServiceImpl final : public FileSystem::Service {
 public:
     Status Mount(ServerContext*, const MountRequest* req, MountResponse* res) override {
         std::lock_guard<std::mutex> lk(mu_);
+        
         int id = next_mount_id_++;
         auto ctx = std::make_unique<FSContext>();
-        if (!ctx->init(req->disk_image()) {
-            res->set_error("Failed to init disk: " + req->disk_image());
+    
+        if (!sfs_init(*ctx, req->disk_image())) {
+            res->set_error("Failed to initialize FS on " + req->disk_image());
             return Status::OK;
         }
-        context_[id] = std::move(ctx);
+
+        contexts_[id] = std::move(ctx);
         res->set_mount_id(id);
         return Status::OK;
     }
@@ -90,7 +93,7 @@ public:
             res->set_error("Invalid mount_id");
             return Status::OK;
         }
-        int fd = sfs_open(req->filename());
+        int fd = sfs_open(*ctx, req->path());
         if (fd < 0) res->set_error("Open failed");
         else        res->set_fd(fd);
         return Status::OK;

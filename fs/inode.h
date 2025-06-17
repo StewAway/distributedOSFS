@@ -4,6 +4,8 @@
 #include "fs_context.h"
 #include "disk.h"
 
+struct FSContext;
+
 struct Inode {
     uint32_t mode; // file type and permissions
     uint32_t size; // file size in bytes

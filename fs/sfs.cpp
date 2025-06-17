@@ -2,6 +2,12 @@
 #include <sstream>
 #include <cstring>
 #include <iostream>
+#include <vector>
+#include "fs_context.h"
+#include "inode.h"
+#include "dir.h"
+#include "block_manager.h"
+#include "disk.h"
 
 static int lookup_path(FSContext &ctx, const std::string &path) {
     std::stringstream ss(path);
@@ -42,7 +48,13 @@ static int get_data_block_index(FSContext &ctx, Inode &ino, int file_block_index
 }
 
 bool sfs_init(FSContext &ctx, const std::string &disk_image) {
-    return ctx.init(disk_image);
+    if (!ctx.disk.disk_init(disk_image)) {
+        std::cerr<<"Failed to initialize disk.\n";
+        return false;
+    }
+    block_manager_init(ctx);
+    inode_init(ctx);
+    return true;
 }
 
 int sfs_create(FSContext &ctx, const std::string &path) {
@@ -207,7 +219,7 @@ bool sfs_remove(FSContext &ctx, const std::string &path) {
         }
         block_free(ctx, ino.indirect);
     }
-    if (dir_remove(parent, name) < 0) return false;
+    if (dir_remove(ctx, parent, name) < 0) return false;
     Inode empty{};
     inode_write(ctx, inum, empty);
     return true;

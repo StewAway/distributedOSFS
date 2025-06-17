@@ -1,5 +1,9 @@
+#include "stat.h"
+#include "fs_context.h"
+#include "inode.h"
 #include <vector>
 #include <cstring>
+
 
 const int INODES_PER_BLOCK = BLOCK_SIZE / sizeof(Inode);
 
@@ -39,10 +43,10 @@ bool inode_write(FSContext &ctx, int inum, const Inode &in) {
     return ctx.disk.disk_write(block, buf.data());
 }
 
-int inode_alloc() {
+int inode_alloc(FSContext &ctx) {
     for (int i = 1;i < NUM_INODES; ++i) {
-        if (!inode_bitmap[i]) {
-            inode_bitmap[i] = true;
+        if (!ctx.inode_bitmap[i]) {
+            ctx.inode_bitmap[i] = true;
             return i;
         }
     }

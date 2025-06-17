@@ -1,4 +1,8 @@
 #include <cstring>
+#include "stat.h"
+#include "fs_context.h"
+#include "inode.h"
+#include "block_manager.h"
 
 struct DirEntry {
     int inum;

@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++17 `pkg-config --cflags grpc++ grpc protobuf`
+CXXFLAGS = -std=c++17 -lstdc++fs `pkg-config --cflags grpc++ grpc protobuf`
 LDFLAGS = `pkg-config --libs grpc++ grpc protobuf`
 PROTO_SRCS = filesystem.pb.cc filesystem.grpc.pb.cc
 
@@ -8,8 +8,9 @@ all: fs_server test_fs_client
 fs_server: fs_server.cpp inode.o dir.o disk.o block_manager.o sfs.o $(PROTO_SRCS)
 	$(CXX) $(CXXFLAGS) -o $@ fs_server.cpp inode.o dir.o disk.o block_manager.o sfs.o $(PROTO_SRCS) $(LDFLAGS)
 
-test_fs_client: test_fs_client.cpp $(PROTO_SRCS)
-	$(CXX) $(CXXFLAGS) -o $@ test_fs_client.cpp $(PROTO_SRCS) $(LDFLAGS)
+test_fs_client: test1_fs_client.cpp test2_fs_client.cpp $(PROTO_SRCS)
+	$(CXX) $(CXXFLAGS) -o $@ test1_fs_client.cpp $(PROTO_SRCS) $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o $@ test2_fs_client.cpp $(PROTO_SRCS) $(LDFLAGS)
 
 inode.o: inode.cpp inode.h
 	$(CXX) $(CXXFLAGS) -c inode.cpp
@@ -27,4 +28,4 @@ sfs.o: sfs.cpp sfs.h
 	$(CXX) $(CXXFLAGS) -c sfs.cpp
 
 clean:
-	rm -f fs_server test_fs_client *.o *.img *.cc *pb.h
+	rm -f fs_server test_fs_client *.o *.img

@@ -1,6 +1,6 @@
 #include "block_manager.h"
 #include "stat.h"
-
+#include "fs_context.h"
 
 void block_manager_init(FSContext& ctx) {
     ctx.block_bitmap.assign(NUM_BLOCKS, false);
