@@ -59,7 +59,7 @@ int dir_add(FSContext &ctx, int dir_inum, const std::string &name, int inum) {
     // Search for empty spot in direct blocks
     for (int i = 0; i < NDIRECT; ++i) {
         if (dir_inode.direct[i] == 0) {
-            dir_inode.direct[i] = block_alloc();
+            dir_inode.direct[i] = block_alloc(ctx);
             inode_write(ctx, dir_inum, dir_inode);
             std::memset(block, 0, sizeof(block));
         } else {
@@ -81,7 +81,7 @@ int dir_add(FSContext &ctx, int dir_inum, const std::string &name, int inum) {
 
     // Search for empty spot in indirect blocks
     if (dir_inode.indirect == 0) {
-        dir_inode.indirect = block_alloc();
+        dir_inode.indirect = block_alloc(ctx);
         inode_write(ctx, dir_inum, dir_inode);
         char zero[BLOCK_SIZE] = {0};
         if (!ctx.disk.disk_write(dir_inode.indirect, zero)) return false;
@@ -92,7 +92,7 @@ int dir_add(FSContext &ctx, int dir_inum, const std::string &name, int inum) {
 
     for (int k = 0; k < NINDIRECT; ++k) {
         if (indirect_block[k] == 0) {
-            indirect_block[k] = block_alloc();
+            indirect_block[k] = block_alloc(ctx);
             char zero[BLOCK_SIZE] = {0};
             if (!ctx.disk.disk_write(indirect_block[k], zero)) return false;
             if (!ctx.disk.disk_write(dir_inode.indirect, (char*)indirect_block)) return false;

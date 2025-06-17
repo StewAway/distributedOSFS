@@ -8,11 +8,25 @@ Disk::~Disk() {
 }
 
 bool Disk::disk_init(const std::string& path) {
-    // Try open existing image
-    file_.open(path, std::ios::in | std::ios::out | std::ios::binary);
+    // 1) Prepare the images/directory
+    const fsys::path img_dir = fsys::current_path() / "images";
+    std::error_code ec;
+    if (!fsys::exists(img_dir, ec)) {
+        if (!fsys::create_directories(img_dir, ec)); {
+            std::cerr<<"[Disk] ERROR: could not create directory "<<img_dir<<": "<<ec.message()<<"\n";
+            return false;
+        }
+    }
+
+    // 2) Build the full path: images/<name>
+    fsys::path full = img_dir / name;
+    auto full_str = full.string();
+
+    // 3) Try open existing image
+    file_.open(full_str, std::ios::in | std::ios::out | std::ios::binary);
     if (!file_.is_open()) {
         // Create file and zero-fill
-        std::ofstream create(path, std::ios::out | std::ios::binary);
+        std::ofstream create(full_str, std::ios::out | std::ios::binary);
         if (!create.is_open()) {
             std::cerr<<"[Disk] Failed to create "<<path<<"\n";
             return false;
@@ -20,12 +34,13 @@ bool Disk::disk_init(const std::string& path) {
         std::vector<char> zeros((size_t)BLOCK_SIZE * NUM_BLOCKS, 0);
         create.write(zeros.data(), zeros.size());
         create.close();
-        file_.open(DISK_IMAGE, std::ios::in | std::ios::out | std::ios::binary);
+        file_.open(full_str, std::ios::in | std::ios::out | std::ios::binary);
     }
     if (!file_is_open()) {
-        std::cerr<<"[Disk] Failed to open "<<path<<"\n";
+        std::cerr<<"[Disk] Failed to open "<<full_str<<"\n";
         return false;
     }
+    std::cout<<"[Disk] Using disk image: "<<full_str<<"\n";
     return true;
 }
 

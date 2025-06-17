@@ -45,95 +45,87 @@ struct TableStruct_filesystem_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_filesystem_2eproto;
 namespace fs {
-class CreateRequest;
-struct CreateRequestDefaultTypeInternal;
-extern CreateRequestDefaultTypeInternal _CreateRequest_default_instance_;
 class CreateResponse;
 struct CreateResponseDefaultTypeInternal;
 extern CreateResponseDefaultTypeInternal _CreateResponse_default_instance_;
-class ListdirRequest;
-struct ListdirRequestDefaultTypeInternal;
-extern ListdirRequestDefaultTypeInternal _ListdirRequest_default_instance_;
+class FileRequest;
+struct FileRequestDefaultTypeInternal;
+extern FileRequestDefaultTypeInternal _FileRequest_default_instance_;
 class ListdirResponse;
 struct ListdirResponseDefaultTypeInternal;
 extern ListdirResponseDefaultTypeInternal _ListdirResponse_default_instance_;
-class MkdirRequest;
-struct MkdirRequestDefaultTypeInternal;
-extern MkdirRequestDefaultTypeInternal _MkdirRequest_default_instance_;
 class MkdirResponse;
 struct MkdirResponseDefaultTypeInternal;
 extern MkdirResponseDefaultTypeInternal _MkdirResponse_default_instance_;
-class OpenRequest;
-struct OpenRequestDefaultTypeInternal;
-extern OpenRequestDefaultTypeInternal _OpenRequest_default_instance_;
+class MountRequest;
+struct MountRequestDefaultTypeInternal;
+extern MountRequestDefaultTypeInternal _MountRequest_default_instance_;
+class MountResponse;
+struct MountResponseDefaultTypeInternal;
+extern MountResponseDefaultTypeInternal _MountResponse_default_instance_;
 class OpenResponse;
 struct OpenResponseDefaultTypeInternal;
 extern OpenResponseDefaultTypeInternal _OpenResponse_default_instance_;
-class ReadRequest;
-struct ReadRequestDefaultTypeInternal;
-extern ReadRequestDefaultTypeInternal _ReadRequest_default_instance_;
+class ReadRequestMulti;
+struct ReadRequestMultiDefaultTypeInternal;
+extern ReadRequestMultiDefaultTypeInternal _ReadRequestMulti_default_instance_;
 class ReadResponse;
 struct ReadResponseDefaultTypeInternal;
 extern ReadResponseDefaultTypeInternal _ReadResponse_default_instance_;
-class RemoveRequest;
-struct RemoveRequestDefaultTypeInternal;
-extern RemoveRequestDefaultTypeInternal _RemoveRequest_default_instance_;
 class RemoveResponse;
 struct RemoveResponseDefaultTypeInternal;
 extern RemoveResponseDefaultTypeInternal _RemoveResponse_default_instance_;
-class SeekRequest;
-struct SeekRequestDefaultTypeInternal;
-extern SeekRequestDefaultTypeInternal _SeekRequest_default_instance_;
+class SeekRequestMulti;
+struct SeekRequestMultiDefaultTypeInternal;
+extern SeekRequestMultiDefaultTypeInternal _SeekRequestMulti_default_instance_;
 class SeekResponse;
 struct SeekResponseDefaultTypeInternal;
 extern SeekResponseDefaultTypeInternal _SeekResponse_default_instance_;
-class WriteRequest;
-struct WriteRequestDefaultTypeInternal;
-extern WriteRequestDefaultTypeInternal _WriteRequest_default_instance_;
+class WriteRequestMulti;
+struct WriteRequestMultiDefaultTypeInternal;
+extern WriteRequestMultiDefaultTypeInternal _WriteRequestMulti_default_instance_;
 class WriteResponse;
 struct WriteResponseDefaultTypeInternal;
 extern WriteResponseDefaultTypeInternal _WriteResponse_default_instance_;
 }  // namespace fs
 PROTOBUF_NAMESPACE_OPEN
-template<> ::fs::CreateRequest* Arena::CreateMaybeMessage<::fs::CreateRequest>(Arena*);
 template<> ::fs::CreateResponse* Arena::CreateMaybeMessage<::fs::CreateResponse>(Arena*);
-template<> ::fs::ListdirRequest* Arena::CreateMaybeMessage<::fs::ListdirRequest>(Arena*);
+template<> ::fs::FileRequest* Arena::CreateMaybeMessage<::fs::FileRequest>(Arena*);
 template<> ::fs::ListdirResponse* Arena::CreateMaybeMessage<::fs::ListdirResponse>(Arena*);
-template<> ::fs::MkdirRequest* Arena::CreateMaybeMessage<::fs::MkdirRequest>(Arena*);
 template<> ::fs::MkdirResponse* Arena::CreateMaybeMessage<::fs::MkdirResponse>(Arena*);
-template<> ::fs::OpenRequest* Arena::CreateMaybeMessage<::fs::OpenRequest>(Arena*);
+template<> ::fs::MountRequest* Arena::CreateMaybeMessage<::fs::MountRequest>(Arena*);
+template<> ::fs::MountResponse* Arena::CreateMaybeMessage<::fs::MountResponse>(Arena*);
 template<> ::fs::OpenResponse* Arena::CreateMaybeMessage<::fs::OpenResponse>(Arena*);
-template<> ::fs::ReadRequest* Arena::CreateMaybeMessage<::fs::ReadRequest>(Arena*);
+template<> ::fs::ReadRequestMulti* Arena::CreateMaybeMessage<::fs::ReadRequestMulti>(Arena*);
 template<> ::fs::ReadResponse* Arena::CreateMaybeMessage<::fs::ReadResponse>(Arena*);
-template<> ::fs::RemoveRequest* Arena::CreateMaybeMessage<::fs::RemoveRequest>(Arena*);
 template<> ::fs::RemoveResponse* Arena::CreateMaybeMessage<::fs::RemoveResponse>(Arena*);
-template<> ::fs::SeekRequest* Arena::CreateMaybeMessage<::fs::SeekRequest>(Arena*);
+template<> ::fs::SeekRequestMulti* Arena::CreateMaybeMessage<::fs::SeekRequestMulti>(Arena*);
 template<> ::fs::SeekResponse* Arena::CreateMaybeMessage<::fs::SeekResponse>(Arena*);
-template<> ::fs::WriteRequest* Arena::CreateMaybeMessage<::fs::WriteRequest>(Arena*);
+template<> ::fs::WriteRequestMulti* Arena::CreateMaybeMessage<::fs::WriteRequestMulti>(Arena*);
 template<> ::fs::WriteResponse* Arena::CreateMaybeMessage<::fs::WriteResponse>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace fs {
 
 // ===================================================================
 
-class CreateRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.CreateRequest) */ {
+class MountRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.MountRequest) */ {
  public:
-  inline CreateRequest() : CreateRequest(nullptr) {}
-  ~CreateRequest() override;
-  explicit PROTOBUF_CONSTEXPR CreateRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline MountRequest() : MountRequest(nullptr) {}
+  ~MountRequest() override;
+  explicit PROTOBUF_CONSTEXPR MountRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CreateRequest(const CreateRequest& from);
-  CreateRequest(CreateRequest&& from) noexcept
-    : CreateRequest() {
+  MountRequest(const MountRequest& from);
+  MountRequest(MountRequest&& from) noexcept
+    : MountRequest() {
     *this = ::std::move(from);
   }
 
-  inline CreateRequest& operator=(const CreateRequest& from) {
+  inline MountRequest& operator=(const MountRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CreateRequest& operator=(CreateRequest&& from) noexcept {
+  inline MountRequest& operator=(MountRequest&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -156,20 +148,20 @@ class CreateRequest final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CreateRequest& default_instance() {
+  static const MountRequest& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CreateRequest* internal_default_instance() {
-    return reinterpret_cast<const CreateRequest*>(
-               &_CreateRequest_default_instance_);
+  static inline const MountRequest* internal_default_instance() {
+    return reinterpret_cast<const MountRequest*>(
+               &_MountRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  friend void swap(CreateRequest& a, CreateRequest& b) {
+  friend void swap(MountRequest& a, MountRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(CreateRequest* other) {
+  inline void Swap(MountRequest* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -182,7 +174,7 @@ class CreateRequest final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CreateRequest* other) {
+  void UnsafeArenaSwap(MountRequest* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -190,14 +182,14 @@ class CreateRequest final :
 
   // implements Message ----------------------------------------------
 
-  CreateRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CreateRequest>(arena);
+  MountRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<MountRequest>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CreateRequest& from);
+  void CopyFrom(const MountRequest& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CreateRequest& from) {
-    CreateRequest::MergeImpl(*this, from);
+  void MergeFrom( const MountRequest& from) {
+    MountRequest::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -215,15 +207,15 @@ class CreateRequest final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CreateRequest* other);
+  void InternalSwap(MountRequest* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "fs.CreateRequest";
+    return "fs.MountRequest";
   }
   protected:
-  explicit CreateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit MountRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -237,9 +229,327 @@ class CreateRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPathFieldNumber = 1,
+    kDiskImageFieldNumber = 1,
   };
-  // string path = 1;
+  // string disk_image = 1;
+  void clear_disk_image();
+  const std::string& disk_image() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_disk_image(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_disk_image();
+  PROTOBUF_NODISCARD std::string* release_disk_image();
+  void set_allocated_disk_image(std::string* disk_image);
+  private:
+  const std::string& _internal_disk_image() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_disk_image(const std::string& value);
+  std::string* _internal_mutable_disk_image();
+  public:
+
+  // @@protoc_insertion_point(class_scope:fs.MountRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr disk_image_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_filesystem_2eproto;
+};
+// -------------------------------------------------------------------
+
+class MountResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.MountResponse) */ {
+ public:
+  inline MountResponse() : MountResponse(nullptr) {}
+  ~MountResponse() override;
+  explicit PROTOBUF_CONSTEXPR MountResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  MountResponse(const MountResponse& from);
+  MountResponse(MountResponse&& from) noexcept
+    : MountResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline MountResponse& operator=(const MountResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline MountResponse& operator=(MountResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const MountResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const MountResponse* internal_default_instance() {
+    return reinterpret_cast<const MountResponse*>(
+               &_MountResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  friend void swap(MountResponse& a, MountResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(MountResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(MountResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  MountResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<MountResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const MountResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const MountResponse& from) {
+    MountResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(MountResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "fs.MountResponse";
+  }
+  protected:
+  explicit MountResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kErrorFieldNumber = 2,
+    kMountIdFieldNumber = 1,
+  };
+  // string error = 2;
+  void clear_error();
+  const std::string& error() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_error(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_error();
+  PROTOBUF_NODISCARD std::string* release_error();
+  void set_allocated_error(std::string* error);
+  private:
+  const std::string& _internal_error() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_error(const std::string& value);
+  std::string* _internal_mutable_error();
+  public:
+
+  // int32 mount_id = 1;
+  void clear_mount_id();
+  int32_t mount_id() const;
+  void set_mount_id(int32_t value);
+  private:
+  int32_t _internal_mount_id() const;
+  void _internal_set_mount_id(int32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:fs.MountResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr error_;
+    int32_t mount_id_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_filesystem_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FileRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.FileRequest) */ {
+ public:
+  inline FileRequest() : FileRequest(nullptr) {}
+  ~FileRequest() override;
+  explicit PROTOBUF_CONSTEXPR FileRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  FileRequest(const FileRequest& from);
+  FileRequest(FileRequest&& from) noexcept
+    : FileRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline FileRequest& operator=(const FileRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FileRequest& operator=(FileRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FileRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FileRequest* internal_default_instance() {
+    return reinterpret_cast<const FileRequest*>(
+               &_FileRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(FileRequest& a, FileRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(FileRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FileRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FileRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<FileRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const FileRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const FileRequest& from) {
+    FileRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(FileRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "fs.FileRequest";
+  }
+  protected:
+  explicit FileRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPathFieldNumber = 2,
+    kMountIdFieldNumber = 1,
+  };
+  // string path = 2;
   void clear_path();
   const std::string& path() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -253,7 +563,16 @@ class CreateRequest final :
   std::string* _internal_mutable_path();
   public:
 
-  // @@protoc_insertion_point(class_scope:fs.CreateRequest)
+  // int32 mount_id = 1;
+  void clear_mount_id();
+  int32_t mount_id() const;
+  void set_mount_id(int32_t value);
+  private:
+  int32_t _internal_mount_id() const;
+  void _internal_set_mount_id(int32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:fs.FileRequest)
  private:
   class _Internal;
 
@@ -262,6 +581,7 @@ class CreateRequest final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr path_;
+    int32_t mount_id_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -317,7 +637,7 @@ class CreateResponse final :
                &_CreateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    3;
 
   friend void swap(CreateResponse& a, CreateResponse& b) {
     a.Swap(&b);
@@ -433,159 +753,6 @@ class CreateResponse final :
 };
 // -------------------------------------------------------------------
 
-class MkdirRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.MkdirRequest) */ {
- public:
-  inline MkdirRequest() : MkdirRequest(nullptr) {}
-  ~MkdirRequest() override;
-  explicit PROTOBUF_CONSTEXPR MkdirRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  MkdirRequest(const MkdirRequest& from);
-  MkdirRequest(MkdirRequest&& from) noexcept
-    : MkdirRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline MkdirRequest& operator=(const MkdirRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline MkdirRequest& operator=(MkdirRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const MkdirRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const MkdirRequest* internal_default_instance() {
-    return reinterpret_cast<const MkdirRequest*>(
-               &_MkdirRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    2;
-
-  friend void swap(MkdirRequest& a, MkdirRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(MkdirRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(MkdirRequest* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  MkdirRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<MkdirRequest>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const MkdirRequest& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const MkdirRequest& from) {
-    MkdirRequest::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(MkdirRequest* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "fs.MkdirRequest";
-  }
-  protected:
-  explicit MkdirRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kPathFieldNumber = 1,
-  };
-  // string path = 1;
-  void clear_path();
-  const std::string& path() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_path(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_path();
-  PROTOBUF_NODISCARD std::string* release_path();
-  void set_allocated_path(std::string* path);
-  private:
-  const std::string& _internal_path() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_path(const std::string& value);
-  std::string* _internal_mutable_path();
-  public:
-
-  // @@protoc_insertion_point(class_scope:fs.MkdirRequest)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr path_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_filesystem_2eproto;
-};
-// -------------------------------------------------------------------
-
 class MkdirResponse final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.MkdirResponse) */ {
  public:
@@ -634,7 +801,7 @@ class MkdirResponse final :
                &_MkdirResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(MkdirResponse& a, MkdirResponse& b) {
     a.Swap(&b);
@@ -743,159 +910,6 @@ class MkdirResponse final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr error_;
     int32_t inum_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_filesystem_2eproto;
-};
-// -------------------------------------------------------------------
-
-class OpenRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.OpenRequest) */ {
- public:
-  inline OpenRequest() : OpenRequest(nullptr) {}
-  ~OpenRequest() override;
-  explicit PROTOBUF_CONSTEXPR OpenRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  OpenRequest(const OpenRequest& from);
-  OpenRequest(OpenRequest&& from) noexcept
-    : OpenRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline OpenRequest& operator=(const OpenRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline OpenRequest& operator=(OpenRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const OpenRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const OpenRequest* internal_default_instance() {
-    return reinterpret_cast<const OpenRequest*>(
-               &_OpenRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    4;
-
-  friend void swap(OpenRequest& a, OpenRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(OpenRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(OpenRequest* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  OpenRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<OpenRequest>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const OpenRequest& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const OpenRequest& from) {
-    OpenRequest::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(OpenRequest* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "fs.OpenRequest";
-  }
-  protected:
-  explicit OpenRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kFilenameFieldNumber = 1,
-  };
-  // string filename = 1;
-  void clear_filename();
-  const std::string& filename() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_filename(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_filename();
-  PROTOBUF_NODISCARD std::string* release_filename();
-  void set_allocated_filename(std::string* filename);
-  private:
-  const std::string& _internal_filename() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const std::string& value);
-  std::string* _internal_mutable_filename();
-  public:
-
-  // @@protoc_insertion_point(class_scope:fs.OpenRequest)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr filename_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1067,24 +1081,24 @@ class OpenResponse final :
 };
 // -------------------------------------------------------------------
 
-class ReadRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.ReadRequest) */ {
+class ReadRequestMulti final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.ReadRequestMulti) */ {
  public:
-  inline ReadRequest() : ReadRequest(nullptr) {}
-  ~ReadRequest() override;
-  explicit PROTOBUF_CONSTEXPR ReadRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline ReadRequestMulti() : ReadRequestMulti(nullptr) {}
+  ~ReadRequestMulti() override;
+  explicit PROTOBUF_CONSTEXPR ReadRequestMulti(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  ReadRequest(const ReadRequest& from);
-  ReadRequest(ReadRequest&& from) noexcept
-    : ReadRequest() {
+  ReadRequestMulti(const ReadRequestMulti& from);
+  ReadRequestMulti(ReadRequestMulti&& from) noexcept
+    : ReadRequestMulti() {
     *this = ::std::move(from);
   }
 
-  inline ReadRequest& operator=(const ReadRequest& from) {
+  inline ReadRequestMulti& operator=(const ReadRequestMulti& from) {
     CopyFrom(from);
     return *this;
   }
-  inline ReadRequest& operator=(ReadRequest&& from) noexcept {
+  inline ReadRequestMulti& operator=(ReadRequestMulti&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -1107,20 +1121,20 @@ class ReadRequest final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const ReadRequest& default_instance() {
+  static const ReadRequestMulti& default_instance() {
     return *internal_default_instance();
   }
-  static inline const ReadRequest* internal_default_instance() {
-    return reinterpret_cast<const ReadRequest*>(
-               &_ReadRequest_default_instance_);
+  static inline const ReadRequestMulti* internal_default_instance() {
+    return reinterpret_cast<const ReadRequestMulti*>(
+               &_ReadRequestMulti_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     6;
 
-  friend void swap(ReadRequest& a, ReadRequest& b) {
+  friend void swap(ReadRequestMulti& a, ReadRequestMulti& b) {
     a.Swap(&b);
   }
-  inline void Swap(ReadRequest* other) {
+  inline void Swap(ReadRequestMulti* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -1133,7 +1147,7 @@ class ReadRequest final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(ReadRequest* other) {
+  void UnsafeArenaSwap(ReadRequestMulti* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -1141,14 +1155,14 @@ class ReadRequest final :
 
   // implements Message ----------------------------------------------
 
-  ReadRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<ReadRequest>(arena);
+  ReadRequestMulti* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ReadRequestMulti>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const ReadRequest& from);
+  void CopyFrom(const ReadRequestMulti& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const ReadRequest& from) {
-    ReadRequest::MergeImpl(*this, from);
+  void MergeFrom( const ReadRequestMulti& from) {
+    ReadRequestMulti::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -1166,15 +1180,15 @@ class ReadRequest final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(ReadRequest* other);
+  void InternalSwap(ReadRequestMulti* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "fs.ReadRequest";
+    return "fs.ReadRequestMulti";
   }
   protected:
-  explicit ReadRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit ReadRequestMulti(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -1188,10 +1202,20 @@ class ReadRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kFdFieldNumber = 1,
-    kNumBytesFieldNumber = 2,
+    kMountIdFieldNumber = 1,
+    kFdFieldNumber = 2,
+    kNumBytesFieldNumber = 3,
   };
-  // int32 fd = 1;
+  // int32 mount_id = 1;
+  void clear_mount_id();
+  int32_t mount_id() const;
+  void set_mount_id(int32_t value);
+  private:
+  int32_t _internal_mount_id() const;
+  void _internal_set_mount_id(int32_t value);
+  public:
+
+  // int32 fd = 2;
   void clear_fd();
   int32_t fd() const;
   void set_fd(int32_t value);
@@ -1200,7 +1224,7 @@ class ReadRequest final :
   void _internal_set_fd(int32_t value);
   public:
 
-  // int32 num_bytes = 2;
+  // int32 num_bytes = 3;
   void clear_num_bytes();
   int32_t num_bytes() const;
   void set_num_bytes(int32_t value);
@@ -1209,7 +1233,7 @@ class ReadRequest final :
   void _internal_set_num_bytes(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:fs.ReadRequest)
+  // @@protoc_insertion_point(class_scope:fs.ReadRequestMulti)
  private:
   class _Internal;
 
@@ -1217,6 +1241,7 @@ class ReadRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    int32_t mount_id_;
     int32_t fd_;
     int32_t num_bytes_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -1350,7 +1375,7 @@ class ReadResponse final :
     kDataFieldNumber = 1,
     kErrorFieldNumber = 2,
   };
-  // string data = 1;
+  // bytes data = 1;
   void clear_data();
   const std::string& data() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -1395,24 +1420,24 @@ class ReadResponse final :
 };
 // -------------------------------------------------------------------
 
-class WriteRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.WriteRequest) */ {
+class WriteRequestMulti final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.WriteRequestMulti) */ {
  public:
-  inline WriteRequest() : WriteRequest(nullptr) {}
-  ~WriteRequest() override;
-  explicit PROTOBUF_CONSTEXPR WriteRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline WriteRequestMulti() : WriteRequestMulti(nullptr) {}
+  ~WriteRequestMulti() override;
+  explicit PROTOBUF_CONSTEXPR WriteRequestMulti(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  WriteRequest(const WriteRequest& from);
-  WriteRequest(WriteRequest&& from) noexcept
-    : WriteRequest() {
+  WriteRequestMulti(const WriteRequestMulti& from);
+  WriteRequestMulti(WriteRequestMulti&& from) noexcept
+    : WriteRequestMulti() {
     *this = ::std::move(from);
   }
 
-  inline WriteRequest& operator=(const WriteRequest& from) {
+  inline WriteRequestMulti& operator=(const WriteRequestMulti& from) {
     CopyFrom(from);
     return *this;
   }
-  inline WriteRequest& operator=(WriteRequest&& from) noexcept {
+  inline WriteRequestMulti& operator=(WriteRequestMulti&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -1435,20 +1460,20 @@ class WriteRequest final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const WriteRequest& default_instance() {
+  static const WriteRequestMulti& default_instance() {
     return *internal_default_instance();
   }
-  static inline const WriteRequest* internal_default_instance() {
-    return reinterpret_cast<const WriteRequest*>(
-               &_WriteRequest_default_instance_);
+  static inline const WriteRequestMulti* internal_default_instance() {
+    return reinterpret_cast<const WriteRequestMulti*>(
+               &_WriteRequestMulti_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     8;
 
-  friend void swap(WriteRequest& a, WriteRequest& b) {
+  friend void swap(WriteRequestMulti& a, WriteRequestMulti& b) {
     a.Swap(&b);
   }
-  inline void Swap(WriteRequest* other) {
+  inline void Swap(WriteRequestMulti* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -1461,7 +1486,7 @@ class WriteRequest final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(WriteRequest* other) {
+  void UnsafeArenaSwap(WriteRequestMulti* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -1469,14 +1494,14 @@ class WriteRequest final :
 
   // implements Message ----------------------------------------------
 
-  WriteRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<WriteRequest>(arena);
+  WriteRequestMulti* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<WriteRequestMulti>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const WriteRequest& from);
+  void CopyFrom(const WriteRequestMulti& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const WriteRequest& from) {
-    WriteRequest::MergeImpl(*this, from);
+  void MergeFrom( const WriteRequestMulti& from) {
+    WriteRequestMulti::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -1494,15 +1519,15 @@ class WriteRequest final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(WriteRequest* other);
+  void InternalSwap(WriteRequestMulti* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "fs.WriteRequest";
+    return "fs.WriteRequestMulti";
   }
   protected:
-  explicit WriteRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit WriteRequestMulti(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -1516,10 +1541,11 @@ class WriteRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDataFieldNumber = 2,
-    kFdFieldNumber = 1,
+    kDataFieldNumber = 3,
+    kMountIdFieldNumber = 1,
+    kFdFieldNumber = 2,
   };
-  // string data = 2;
+  // bytes data = 3;
   void clear_data();
   const std::string& data() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -1533,7 +1559,16 @@ class WriteRequest final :
   std::string* _internal_mutable_data();
   public:
 
-  // int32 fd = 1;
+  // int32 mount_id = 1;
+  void clear_mount_id();
+  int32_t mount_id() const;
+  void set_mount_id(int32_t value);
+  private:
+  int32_t _internal_mount_id() const;
+  void _internal_set_mount_id(int32_t value);
+  public:
+
+  // int32 fd = 2;
   void clear_fd();
   int32_t fd() const;
   void set_fd(int32_t value);
@@ -1542,7 +1577,7 @@ class WriteRequest final :
   void _internal_set_fd(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:fs.WriteRequest)
+  // @@protoc_insertion_point(class_scope:fs.WriteRequestMulti)
  private:
   class _Internal;
 
@@ -1551,6 +1586,7 @@ class WriteRequest final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
+    int32_t mount_id_;
     int32_t fd_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -1723,24 +1759,24 @@ class WriteResponse final :
 };
 // -------------------------------------------------------------------
 
-class SeekRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.SeekRequest) */ {
+class SeekRequestMulti final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.SeekRequestMulti) */ {
  public:
-  inline SeekRequest() : SeekRequest(nullptr) {}
-  ~SeekRequest() override;
-  explicit PROTOBUF_CONSTEXPR SeekRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline SeekRequestMulti() : SeekRequestMulti(nullptr) {}
+  ~SeekRequestMulti() override;
+  explicit PROTOBUF_CONSTEXPR SeekRequestMulti(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  SeekRequest(const SeekRequest& from);
-  SeekRequest(SeekRequest&& from) noexcept
-    : SeekRequest() {
+  SeekRequestMulti(const SeekRequestMulti& from);
+  SeekRequestMulti(SeekRequestMulti&& from) noexcept
+    : SeekRequestMulti() {
     *this = ::std::move(from);
   }
 
-  inline SeekRequest& operator=(const SeekRequest& from) {
+  inline SeekRequestMulti& operator=(const SeekRequestMulti& from) {
     CopyFrom(from);
     return *this;
   }
-  inline SeekRequest& operator=(SeekRequest&& from) noexcept {
+  inline SeekRequestMulti& operator=(SeekRequestMulti&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -1763,20 +1799,20 @@ class SeekRequest final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const SeekRequest& default_instance() {
+  static const SeekRequestMulti& default_instance() {
     return *internal_default_instance();
   }
-  static inline const SeekRequest* internal_default_instance() {
-    return reinterpret_cast<const SeekRequest*>(
-               &_SeekRequest_default_instance_);
+  static inline const SeekRequestMulti* internal_default_instance() {
+    return reinterpret_cast<const SeekRequestMulti*>(
+               &_SeekRequestMulti_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     10;
 
-  friend void swap(SeekRequest& a, SeekRequest& b) {
+  friend void swap(SeekRequestMulti& a, SeekRequestMulti& b) {
     a.Swap(&b);
   }
-  inline void Swap(SeekRequest* other) {
+  inline void Swap(SeekRequestMulti* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -1789,7 +1825,7 @@ class SeekRequest final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(SeekRequest* other) {
+  void UnsafeArenaSwap(SeekRequestMulti* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -1797,14 +1833,14 @@ class SeekRequest final :
 
   // implements Message ----------------------------------------------
 
-  SeekRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SeekRequest>(arena);
+  SeekRequestMulti* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SeekRequestMulti>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const SeekRequest& from);
+  void CopyFrom(const SeekRequestMulti& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const SeekRequest& from) {
-    SeekRequest::MergeImpl(*this, from);
+  void MergeFrom( const SeekRequestMulti& from) {
+    SeekRequestMulti::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -1822,15 +1858,15 @@ class SeekRequest final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(SeekRequest* other);
+  void InternalSwap(SeekRequestMulti* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "fs.SeekRequest";
+    return "fs.SeekRequestMulti";
   }
   protected:
-  explicit SeekRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit SeekRequestMulti(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -1844,11 +1880,21 @@ class SeekRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kFdFieldNumber = 1,
-    kOffsetFieldNumber = 2,
-    kWhenceFieldNumber = 3,
+    kMountIdFieldNumber = 1,
+    kFdFieldNumber = 2,
+    kOffsetFieldNumber = 3,
+    kWhenceFieldNumber = 4,
   };
-  // int32 fd = 1;
+  // int32 mount_id = 1;
+  void clear_mount_id();
+  int32_t mount_id() const;
+  void set_mount_id(int32_t value);
+  private:
+  int32_t _internal_mount_id() const;
+  void _internal_set_mount_id(int32_t value);
+  public:
+
+  // int32 fd = 2;
   void clear_fd();
   int32_t fd() const;
   void set_fd(int32_t value);
@@ -1857,7 +1903,7 @@ class SeekRequest final :
   void _internal_set_fd(int32_t value);
   public:
 
-  // int32 offset = 2;
+  // int32 offset = 3;
   void clear_offset();
   int32_t offset() const;
   void set_offset(int32_t value);
@@ -1866,7 +1912,7 @@ class SeekRequest final :
   void _internal_set_offset(int32_t value);
   public:
 
-  // int32 whence = 3;
+  // int32 whence = 4;
   void clear_whence();
   int32_t whence() const;
   void set_whence(int32_t value);
@@ -1875,7 +1921,7 @@ class SeekRequest final :
   void _internal_set_whence(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:fs.SeekRequest)
+  // @@protoc_insertion_point(class_scope:fs.SeekRequestMulti)
  private:
   class _Internal;
 
@@ -1883,6 +1929,7 @@ class SeekRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    int32_t mount_id_;
     int32_t fd_;
     int32_t offset_;
     int32_t whence_;
@@ -2057,159 +2104,6 @@ class SeekResponse final :
 };
 // -------------------------------------------------------------------
 
-class ListdirRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.ListdirRequest) */ {
- public:
-  inline ListdirRequest() : ListdirRequest(nullptr) {}
-  ~ListdirRequest() override;
-  explicit PROTOBUF_CONSTEXPR ListdirRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  ListdirRequest(const ListdirRequest& from);
-  ListdirRequest(ListdirRequest&& from) noexcept
-    : ListdirRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline ListdirRequest& operator=(const ListdirRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline ListdirRequest& operator=(ListdirRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const ListdirRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const ListdirRequest* internal_default_instance() {
-    return reinterpret_cast<const ListdirRequest*>(
-               &_ListdirRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    12;
-
-  friend void swap(ListdirRequest& a, ListdirRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(ListdirRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(ListdirRequest* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  ListdirRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<ListdirRequest>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const ListdirRequest& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const ListdirRequest& from) {
-    ListdirRequest::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(ListdirRequest* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "fs.ListdirRequest";
-  }
-  protected:
-  explicit ListdirRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kPathFieldNumber = 1,
-  };
-  // string path = 1;
-  void clear_path();
-  const std::string& path() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_path(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_path();
-  PROTOBUF_NODISCARD std::string* release_path();
-  void set_allocated_path(std::string* path);
-  private:
-  const std::string& _internal_path() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_path(const std::string& value);
-  std::string* _internal_mutable_path();
-  public:
-
-  // @@protoc_insertion_point(class_scope:fs.ListdirRequest)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr path_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_filesystem_2eproto;
-};
-// -------------------------------------------------------------------
-
 class ListdirResponse final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.ListdirResponse) */ {
  public:
@@ -2258,7 +2152,7 @@ class ListdirResponse final :
                &_ListdirResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    12;
 
   friend void swap(ListdirResponse& a, ListdirResponse& b) {
     a.Swap(&b);
@@ -2389,159 +2283,6 @@ class ListdirResponse final :
 };
 // -------------------------------------------------------------------
 
-class RemoveRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.RemoveRequest) */ {
- public:
-  inline RemoveRequest() : RemoveRequest(nullptr) {}
-  ~RemoveRequest() override;
-  explicit PROTOBUF_CONSTEXPR RemoveRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  RemoveRequest(const RemoveRequest& from);
-  RemoveRequest(RemoveRequest&& from) noexcept
-    : RemoveRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline RemoveRequest& operator=(const RemoveRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline RemoveRequest& operator=(RemoveRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const RemoveRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const RemoveRequest* internal_default_instance() {
-    return reinterpret_cast<const RemoveRequest*>(
-               &_RemoveRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    14;
-
-  friend void swap(RemoveRequest& a, RemoveRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(RemoveRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(RemoveRequest* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  RemoveRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<RemoveRequest>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const RemoveRequest& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const RemoveRequest& from) {
-    RemoveRequest::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(RemoveRequest* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "fs.RemoveRequest";
-  }
-  protected:
-  explicit RemoveRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kPathFieldNumber = 1,
-  };
-  // string path = 1;
-  void clear_path();
-  const std::string& path() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_path(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_path();
-  PROTOBUF_NODISCARD std::string* release_path();
-  void set_allocated_path(std::string* path);
-  private:
-  const std::string& _internal_path() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_path(const std::string& value);
-  std::string* _internal_mutable_path();
-  public:
-
-  // @@protoc_insertion_point(class_scope:fs.RemoveRequest)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr path_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_filesystem_2eproto;
-};
-// -------------------------------------------------------------------
-
 class RemoveResponse final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:fs.RemoveResponse) */ {
  public:
@@ -2590,7 +2331,7 @@ class RemoveResponse final :
                &_RemoveResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    13;
 
   friend void swap(RemoveResponse& a, RemoveResponse& b) {
     a.Swap(&b);
@@ -2713,44 +2454,192 @@ class RemoveResponse final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// CreateRequest
+// MountRequest
 
-// string path = 1;
-inline void CreateRequest::clear_path() {
+// string disk_image = 1;
+inline void MountRequest::clear_disk_image() {
+  _impl_.disk_image_.ClearToEmpty();
+}
+inline const std::string& MountRequest::disk_image() const {
+  // @@protoc_insertion_point(field_get:fs.MountRequest.disk_image)
+  return _internal_disk_image();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void MountRequest::set_disk_image(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.disk_image_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:fs.MountRequest.disk_image)
+}
+inline std::string* MountRequest::mutable_disk_image() {
+  std::string* _s = _internal_mutable_disk_image();
+  // @@protoc_insertion_point(field_mutable:fs.MountRequest.disk_image)
+  return _s;
+}
+inline const std::string& MountRequest::_internal_disk_image() const {
+  return _impl_.disk_image_.Get();
+}
+inline void MountRequest::_internal_set_disk_image(const std::string& value) {
+  
+  _impl_.disk_image_.Set(value, GetArenaForAllocation());
+}
+inline std::string* MountRequest::_internal_mutable_disk_image() {
+  
+  return _impl_.disk_image_.Mutable(GetArenaForAllocation());
+}
+inline std::string* MountRequest::release_disk_image() {
+  // @@protoc_insertion_point(field_release:fs.MountRequest.disk_image)
+  return _impl_.disk_image_.Release();
+}
+inline void MountRequest::set_allocated_disk_image(std::string* disk_image) {
+  if (disk_image != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.disk_image_.SetAllocated(disk_image, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.disk_image_.IsDefault()) {
+    _impl_.disk_image_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:fs.MountRequest.disk_image)
+}
+
+// -------------------------------------------------------------------
+
+// MountResponse
+
+// int32 mount_id = 1;
+inline void MountResponse::clear_mount_id() {
+  _impl_.mount_id_ = 0;
+}
+inline int32_t MountResponse::_internal_mount_id() const {
+  return _impl_.mount_id_;
+}
+inline int32_t MountResponse::mount_id() const {
+  // @@protoc_insertion_point(field_get:fs.MountResponse.mount_id)
+  return _internal_mount_id();
+}
+inline void MountResponse::_internal_set_mount_id(int32_t value) {
+  
+  _impl_.mount_id_ = value;
+}
+inline void MountResponse::set_mount_id(int32_t value) {
+  _internal_set_mount_id(value);
+  // @@protoc_insertion_point(field_set:fs.MountResponse.mount_id)
+}
+
+// string error = 2;
+inline void MountResponse::clear_error() {
+  _impl_.error_.ClearToEmpty();
+}
+inline const std::string& MountResponse::error() const {
+  // @@protoc_insertion_point(field_get:fs.MountResponse.error)
+  return _internal_error();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void MountResponse::set_error(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.error_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:fs.MountResponse.error)
+}
+inline std::string* MountResponse::mutable_error() {
+  std::string* _s = _internal_mutable_error();
+  // @@protoc_insertion_point(field_mutable:fs.MountResponse.error)
+  return _s;
+}
+inline const std::string& MountResponse::_internal_error() const {
+  return _impl_.error_.Get();
+}
+inline void MountResponse::_internal_set_error(const std::string& value) {
+  
+  _impl_.error_.Set(value, GetArenaForAllocation());
+}
+inline std::string* MountResponse::_internal_mutable_error() {
+  
+  return _impl_.error_.Mutable(GetArenaForAllocation());
+}
+inline std::string* MountResponse::release_error() {
+  // @@protoc_insertion_point(field_release:fs.MountResponse.error)
+  return _impl_.error_.Release();
+}
+inline void MountResponse::set_allocated_error(std::string* error) {
+  if (error != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.error_.SetAllocated(error, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.error_.IsDefault()) {
+    _impl_.error_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:fs.MountResponse.error)
+}
+
+// -------------------------------------------------------------------
+
+// FileRequest
+
+// int32 mount_id = 1;
+inline void FileRequest::clear_mount_id() {
+  _impl_.mount_id_ = 0;
+}
+inline int32_t FileRequest::_internal_mount_id() const {
+  return _impl_.mount_id_;
+}
+inline int32_t FileRequest::mount_id() const {
+  // @@protoc_insertion_point(field_get:fs.FileRequest.mount_id)
+  return _internal_mount_id();
+}
+inline void FileRequest::_internal_set_mount_id(int32_t value) {
+  
+  _impl_.mount_id_ = value;
+}
+inline void FileRequest::set_mount_id(int32_t value) {
+  _internal_set_mount_id(value);
+  // @@protoc_insertion_point(field_set:fs.FileRequest.mount_id)
+}
+
+// string path = 2;
+inline void FileRequest::clear_path() {
   _impl_.path_.ClearToEmpty();
 }
-inline const std::string& CreateRequest::path() const {
-  // @@protoc_insertion_point(field_get:fs.CreateRequest.path)
+inline const std::string& FileRequest::path() const {
+  // @@protoc_insertion_point(field_get:fs.FileRequest.path)
   return _internal_path();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CreateRequest::set_path(ArgT0&& arg0, ArgT... args) {
+void FileRequest::set_path(ArgT0&& arg0, ArgT... args) {
  
  _impl_.path_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:fs.CreateRequest.path)
+  // @@protoc_insertion_point(field_set:fs.FileRequest.path)
 }
-inline std::string* CreateRequest::mutable_path() {
+inline std::string* FileRequest::mutable_path() {
   std::string* _s = _internal_mutable_path();
-  // @@protoc_insertion_point(field_mutable:fs.CreateRequest.path)
+  // @@protoc_insertion_point(field_mutable:fs.FileRequest.path)
   return _s;
 }
-inline const std::string& CreateRequest::_internal_path() const {
+inline const std::string& FileRequest::_internal_path() const {
   return _impl_.path_.Get();
 }
-inline void CreateRequest::_internal_set_path(const std::string& value) {
+inline void FileRequest::_internal_set_path(const std::string& value) {
   
   _impl_.path_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CreateRequest::_internal_mutable_path() {
+inline std::string* FileRequest::_internal_mutable_path() {
   
   return _impl_.path_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CreateRequest::release_path() {
-  // @@protoc_insertion_point(field_release:fs.CreateRequest.path)
+inline std::string* FileRequest::release_path() {
+  // @@protoc_insertion_point(field_release:fs.FileRequest.path)
   return _impl_.path_.Release();
 }
-inline void CreateRequest::set_allocated_path(std::string* path) {
+inline void FileRequest::set_allocated_path(std::string* path) {
   if (path != nullptr) {
     
   } else {
@@ -2762,7 +2651,7 @@ inline void CreateRequest::set_allocated_path(std::string* path) {
     _impl_.path_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:fs.CreateRequest.path)
+  // @@protoc_insertion_point(field_set_allocated:fs.FileRequest.path)
 }
 
 // -------------------------------------------------------------------
@@ -2841,60 +2730,6 @@ inline void CreateResponse::set_allocated_error(std::string* error) {
 
 // -------------------------------------------------------------------
 
-// MkdirRequest
-
-// string path = 1;
-inline void MkdirRequest::clear_path() {
-  _impl_.path_.ClearToEmpty();
-}
-inline const std::string& MkdirRequest::path() const {
-  // @@protoc_insertion_point(field_get:fs.MkdirRequest.path)
-  return _internal_path();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void MkdirRequest::set_path(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.path_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:fs.MkdirRequest.path)
-}
-inline std::string* MkdirRequest::mutable_path() {
-  std::string* _s = _internal_mutable_path();
-  // @@protoc_insertion_point(field_mutable:fs.MkdirRequest.path)
-  return _s;
-}
-inline const std::string& MkdirRequest::_internal_path() const {
-  return _impl_.path_.Get();
-}
-inline void MkdirRequest::_internal_set_path(const std::string& value) {
-  
-  _impl_.path_.Set(value, GetArenaForAllocation());
-}
-inline std::string* MkdirRequest::_internal_mutable_path() {
-  
-  return _impl_.path_.Mutable(GetArenaForAllocation());
-}
-inline std::string* MkdirRequest::release_path() {
-  // @@protoc_insertion_point(field_release:fs.MkdirRequest.path)
-  return _impl_.path_.Release();
-}
-inline void MkdirRequest::set_allocated_path(std::string* path) {
-  if (path != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.path_.SetAllocated(path, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.path_.IsDefault()) {
-    _impl_.path_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:fs.MkdirRequest.path)
-}
-
-// -------------------------------------------------------------------
-
 // MkdirResponse
 
 // int32 inum = 1;
@@ -2965,60 +2800,6 @@ inline void MkdirResponse::set_allocated_error(std::string* error) {
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:fs.MkdirResponse.error)
-}
-
-// -------------------------------------------------------------------
-
-// OpenRequest
-
-// string filename = 1;
-inline void OpenRequest::clear_filename() {
-  _impl_.filename_.ClearToEmpty();
-}
-inline const std::string& OpenRequest::filename() const {
-  // @@protoc_insertion_point(field_get:fs.OpenRequest.filename)
-  return _internal_filename();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void OpenRequest::set_filename(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.filename_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:fs.OpenRequest.filename)
-}
-inline std::string* OpenRequest::mutable_filename() {
-  std::string* _s = _internal_mutable_filename();
-  // @@protoc_insertion_point(field_mutable:fs.OpenRequest.filename)
-  return _s;
-}
-inline const std::string& OpenRequest::_internal_filename() const {
-  return _impl_.filename_.Get();
-}
-inline void OpenRequest::_internal_set_filename(const std::string& value) {
-  
-  _impl_.filename_.Set(value, GetArenaForAllocation());
-}
-inline std::string* OpenRequest::_internal_mutable_filename() {
-  
-  return _impl_.filename_.Mutable(GetArenaForAllocation());
-}
-inline std::string* OpenRequest::release_filename() {
-  // @@protoc_insertion_point(field_release:fs.OpenRequest.filename)
-  return _impl_.filename_.Release();
-}
-inline void OpenRequest::set_allocated_filename(std::string* filename) {
-  if (filename != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.filename_.SetAllocated(filename, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.filename_.IsDefault()) {
-    _impl_.filename_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:fs.OpenRequest.filename)
 }
 
 // -------------------------------------------------------------------
@@ -3097,53 +2878,73 @@ inline void OpenResponse::set_allocated_error(std::string* error) {
 
 // -------------------------------------------------------------------
 
-// ReadRequest
+// ReadRequestMulti
 
-// int32 fd = 1;
-inline void ReadRequest::clear_fd() {
+// int32 mount_id = 1;
+inline void ReadRequestMulti::clear_mount_id() {
+  _impl_.mount_id_ = 0;
+}
+inline int32_t ReadRequestMulti::_internal_mount_id() const {
+  return _impl_.mount_id_;
+}
+inline int32_t ReadRequestMulti::mount_id() const {
+  // @@protoc_insertion_point(field_get:fs.ReadRequestMulti.mount_id)
+  return _internal_mount_id();
+}
+inline void ReadRequestMulti::_internal_set_mount_id(int32_t value) {
+  
+  _impl_.mount_id_ = value;
+}
+inline void ReadRequestMulti::set_mount_id(int32_t value) {
+  _internal_set_mount_id(value);
+  // @@protoc_insertion_point(field_set:fs.ReadRequestMulti.mount_id)
+}
+
+// int32 fd = 2;
+inline void ReadRequestMulti::clear_fd() {
   _impl_.fd_ = 0;
 }
-inline int32_t ReadRequest::_internal_fd() const {
+inline int32_t ReadRequestMulti::_internal_fd() const {
   return _impl_.fd_;
 }
-inline int32_t ReadRequest::fd() const {
-  // @@protoc_insertion_point(field_get:fs.ReadRequest.fd)
+inline int32_t ReadRequestMulti::fd() const {
+  // @@protoc_insertion_point(field_get:fs.ReadRequestMulti.fd)
   return _internal_fd();
 }
-inline void ReadRequest::_internal_set_fd(int32_t value) {
+inline void ReadRequestMulti::_internal_set_fd(int32_t value) {
   
   _impl_.fd_ = value;
 }
-inline void ReadRequest::set_fd(int32_t value) {
+inline void ReadRequestMulti::set_fd(int32_t value) {
   _internal_set_fd(value);
-  // @@protoc_insertion_point(field_set:fs.ReadRequest.fd)
+  // @@protoc_insertion_point(field_set:fs.ReadRequestMulti.fd)
 }
 
-// int32 num_bytes = 2;
-inline void ReadRequest::clear_num_bytes() {
+// int32 num_bytes = 3;
+inline void ReadRequestMulti::clear_num_bytes() {
   _impl_.num_bytes_ = 0;
 }
-inline int32_t ReadRequest::_internal_num_bytes() const {
+inline int32_t ReadRequestMulti::_internal_num_bytes() const {
   return _impl_.num_bytes_;
 }
-inline int32_t ReadRequest::num_bytes() const {
-  // @@protoc_insertion_point(field_get:fs.ReadRequest.num_bytes)
+inline int32_t ReadRequestMulti::num_bytes() const {
+  // @@protoc_insertion_point(field_get:fs.ReadRequestMulti.num_bytes)
   return _internal_num_bytes();
 }
-inline void ReadRequest::_internal_set_num_bytes(int32_t value) {
+inline void ReadRequestMulti::_internal_set_num_bytes(int32_t value) {
   
   _impl_.num_bytes_ = value;
 }
-inline void ReadRequest::set_num_bytes(int32_t value) {
+inline void ReadRequestMulti::set_num_bytes(int32_t value) {
   _internal_set_num_bytes(value);
-  // @@protoc_insertion_point(field_set:fs.ReadRequest.num_bytes)
+  // @@protoc_insertion_point(field_set:fs.ReadRequestMulti.num_bytes)
 }
 
 // -------------------------------------------------------------------
 
 // ReadResponse
 
-// string data = 1;
+// bytes data = 1;
 inline void ReadResponse::clear_data() {
   _impl_.data_.ClearToEmpty();
 }
@@ -3155,7 +2956,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void ReadResponse::set_data(ArgT0&& arg0, ArgT... args) {
  
- _impl_.data_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.data_.SetBytes(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:fs.ReadResponse.data)
 }
 inline std::string* ReadResponse::mutable_data() {
@@ -3245,64 +3046,84 @@ inline void ReadResponse::set_allocated_error(std::string* error) {
 
 // -------------------------------------------------------------------
 
-// WriteRequest
+// WriteRequestMulti
 
-// int32 fd = 1;
-inline void WriteRequest::clear_fd() {
+// int32 mount_id = 1;
+inline void WriteRequestMulti::clear_mount_id() {
+  _impl_.mount_id_ = 0;
+}
+inline int32_t WriteRequestMulti::_internal_mount_id() const {
+  return _impl_.mount_id_;
+}
+inline int32_t WriteRequestMulti::mount_id() const {
+  // @@protoc_insertion_point(field_get:fs.WriteRequestMulti.mount_id)
+  return _internal_mount_id();
+}
+inline void WriteRequestMulti::_internal_set_mount_id(int32_t value) {
+  
+  _impl_.mount_id_ = value;
+}
+inline void WriteRequestMulti::set_mount_id(int32_t value) {
+  _internal_set_mount_id(value);
+  // @@protoc_insertion_point(field_set:fs.WriteRequestMulti.mount_id)
+}
+
+// int32 fd = 2;
+inline void WriteRequestMulti::clear_fd() {
   _impl_.fd_ = 0;
 }
-inline int32_t WriteRequest::_internal_fd() const {
+inline int32_t WriteRequestMulti::_internal_fd() const {
   return _impl_.fd_;
 }
-inline int32_t WriteRequest::fd() const {
-  // @@protoc_insertion_point(field_get:fs.WriteRequest.fd)
+inline int32_t WriteRequestMulti::fd() const {
+  // @@protoc_insertion_point(field_get:fs.WriteRequestMulti.fd)
   return _internal_fd();
 }
-inline void WriteRequest::_internal_set_fd(int32_t value) {
+inline void WriteRequestMulti::_internal_set_fd(int32_t value) {
   
   _impl_.fd_ = value;
 }
-inline void WriteRequest::set_fd(int32_t value) {
+inline void WriteRequestMulti::set_fd(int32_t value) {
   _internal_set_fd(value);
-  // @@protoc_insertion_point(field_set:fs.WriteRequest.fd)
+  // @@protoc_insertion_point(field_set:fs.WriteRequestMulti.fd)
 }
 
-// string data = 2;
-inline void WriteRequest::clear_data() {
+// bytes data = 3;
+inline void WriteRequestMulti::clear_data() {
   _impl_.data_.ClearToEmpty();
 }
-inline const std::string& WriteRequest::data() const {
-  // @@protoc_insertion_point(field_get:fs.WriteRequest.data)
+inline const std::string& WriteRequestMulti::data() const {
+  // @@protoc_insertion_point(field_get:fs.WriteRequestMulti.data)
   return _internal_data();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void WriteRequest::set_data(ArgT0&& arg0, ArgT... args) {
+void WriteRequestMulti::set_data(ArgT0&& arg0, ArgT... args) {
  
- _impl_.data_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:fs.WriteRequest.data)
+ _impl_.data_.SetBytes(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:fs.WriteRequestMulti.data)
 }
-inline std::string* WriteRequest::mutable_data() {
+inline std::string* WriteRequestMulti::mutable_data() {
   std::string* _s = _internal_mutable_data();
-  // @@protoc_insertion_point(field_mutable:fs.WriteRequest.data)
+  // @@protoc_insertion_point(field_mutable:fs.WriteRequestMulti.data)
   return _s;
 }
-inline const std::string& WriteRequest::_internal_data() const {
+inline const std::string& WriteRequestMulti::_internal_data() const {
   return _impl_.data_.Get();
 }
-inline void WriteRequest::_internal_set_data(const std::string& value) {
+inline void WriteRequestMulti::_internal_set_data(const std::string& value) {
   
   _impl_.data_.Set(value, GetArenaForAllocation());
 }
-inline std::string* WriteRequest::_internal_mutable_data() {
+inline std::string* WriteRequestMulti::_internal_mutable_data() {
   
   return _impl_.data_.Mutable(GetArenaForAllocation());
 }
-inline std::string* WriteRequest::release_data() {
-  // @@protoc_insertion_point(field_release:fs.WriteRequest.data)
+inline std::string* WriteRequestMulti::release_data() {
+  // @@protoc_insertion_point(field_release:fs.WriteRequestMulti.data)
   return _impl_.data_.Release();
 }
-inline void WriteRequest::set_allocated_data(std::string* data) {
+inline void WriteRequestMulti::set_allocated_data(std::string* data) {
   if (data != nullptr) {
     
   } else {
@@ -3314,7 +3135,7 @@ inline void WriteRequest::set_allocated_data(std::string* data) {
     _impl_.data_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:fs.WriteRequest.data)
+  // @@protoc_insertion_point(field_set_allocated:fs.WriteRequestMulti.data)
 }
 
 // -------------------------------------------------------------------
@@ -3393,66 +3214,86 @@ inline void WriteResponse::set_allocated_error(std::string* error) {
 
 // -------------------------------------------------------------------
 
-// SeekRequest
+// SeekRequestMulti
 
-// int32 fd = 1;
-inline void SeekRequest::clear_fd() {
+// int32 mount_id = 1;
+inline void SeekRequestMulti::clear_mount_id() {
+  _impl_.mount_id_ = 0;
+}
+inline int32_t SeekRequestMulti::_internal_mount_id() const {
+  return _impl_.mount_id_;
+}
+inline int32_t SeekRequestMulti::mount_id() const {
+  // @@protoc_insertion_point(field_get:fs.SeekRequestMulti.mount_id)
+  return _internal_mount_id();
+}
+inline void SeekRequestMulti::_internal_set_mount_id(int32_t value) {
+  
+  _impl_.mount_id_ = value;
+}
+inline void SeekRequestMulti::set_mount_id(int32_t value) {
+  _internal_set_mount_id(value);
+  // @@protoc_insertion_point(field_set:fs.SeekRequestMulti.mount_id)
+}
+
+// int32 fd = 2;
+inline void SeekRequestMulti::clear_fd() {
   _impl_.fd_ = 0;
 }
-inline int32_t SeekRequest::_internal_fd() const {
+inline int32_t SeekRequestMulti::_internal_fd() const {
   return _impl_.fd_;
 }
-inline int32_t SeekRequest::fd() const {
-  // @@protoc_insertion_point(field_get:fs.SeekRequest.fd)
+inline int32_t SeekRequestMulti::fd() const {
+  // @@protoc_insertion_point(field_get:fs.SeekRequestMulti.fd)
   return _internal_fd();
 }
-inline void SeekRequest::_internal_set_fd(int32_t value) {
+inline void SeekRequestMulti::_internal_set_fd(int32_t value) {
   
   _impl_.fd_ = value;
 }
-inline void SeekRequest::set_fd(int32_t value) {
+inline void SeekRequestMulti::set_fd(int32_t value) {
   _internal_set_fd(value);
-  // @@protoc_insertion_point(field_set:fs.SeekRequest.fd)
+  // @@protoc_insertion_point(field_set:fs.SeekRequestMulti.fd)
 }
 
-// int32 offset = 2;
-inline void SeekRequest::clear_offset() {
+// int32 offset = 3;
+inline void SeekRequestMulti::clear_offset() {
   _impl_.offset_ = 0;
 }
-inline int32_t SeekRequest::_internal_offset() const {
+inline int32_t SeekRequestMulti::_internal_offset() const {
   return _impl_.offset_;
 }
-inline int32_t SeekRequest::offset() const {
-  // @@protoc_insertion_point(field_get:fs.SeekRequest.offset)
+inline int32_t SeekRequestMulti::offset() const {
+  // @@protoc_insertion_point(field_get:fs.SeekRequestMulti.offset)
   return _internal_offset();
 }
-inline void SeekRequest::_internal_set_offset(int32_t value) {
+inline void SeekRequestMulti::_internal_set_offset(int32_t value) {
   
   _impl_.offset_ = value;
 }
-inline void SeekRequest::set_offset(int32_t value) {
+inline void SeekRequestMulti::set_offset(int32_t value) {
   _internal_set_offset(value);
-  // @@protoc_insertion_point(field_set:fs.SeekRequest.offset)
+  // @@protoc_insertion_point(field_set:fs.SeekRequestMulti.offset)
 }
 
-// int32 whence = 3;
-inline void SeekRequest::clear_whence() {
+// int32 whence = 4;
+inline void SeekRequestMulti::clear_whence() {
   _impl_.whence_ = 0;
 }
-inline int32_t SeekRequest::_internal_whence() const {
+inline int32_t SeekRequestMulti::_internal_whence() const {
   return _impl_.whence_;
 }
-inline int32_t SeekRequest::whence() const {
-  // @@protoc_insertion_point(field_get:fs.SeekRequest.whence)
+inline int32_t SeekRequestMulti::whence() const {
+  // @@protoc_insertion_point(field_get:fs.SeekRequestMulti.whence)
   return _internal_whence();
 }
-inline void SeekRequest::_internal_set_whence(int32_t value) {
+inline void SeekRequestMulti::_internal_set_whence(int32_t value) {
   
   _impl_.whence_ = value;
 }
-inline void SeekRequest::set_whence(int32_t value) {
+inline void SeekRequestMulti::set_whence(int32_t value) {
   _internal_set_whence(value);
-  // @@protoc_insertion_point(field_set:fs.SeekRequest.whence)
+  // @@protoc_insertion_point(field_set:fs.SeekRequestMulti.whence)
 }
 
 // -------------------------------------------------------------------
@@ -3527,60 +3368,6 @@ inline void SeekResponse::set_allocated_error(std::string* error) {
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:fs.SeekResponse.error)
-}
-
-// -------------------------------------------------------------------
-
-// ListdirRequest
-
-// string path = 1;
-inline void ListdirRequest::clear_path() {
-  _impl_.path_.ClearToEmpty();
-}
-inline const std::string& ListdirRequest::path() const {
-  // @@protoc_insertion_point(field_get:fs.ListdirRequest.path)
-  return _internal_path();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void ListdirRequest::set_path(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.path_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:fs.ListdirRequest.path)
-}
-inline std::string* ListdirRequest::mutable_path() {
-  std::string* _s = _internal_mutable_path();
-  // @@protoc_insertion_point(field_mutable:fs.ListdirRequest.path)
-  return _s;
-}
-inline const std::string& ListdirRequest::_internal_path() const {
-  return _impl_.path_.Get();
-}
-inline void ListdirRequest::_internal_set_path(const std::string& value) {
-  
-  _impl_.path_.Set(value, GetArenaForAllocation());
-}
-inline std::string* ListdirRequest::_internal_mutable_path() {
-  
-  return _impl_.path_.Mutable(GetArenaForAllocation());
-}
-inline std::string* ListdirRequest::release_path() {
-  // @@protoc_insertion_point(field_release:fs.ListdirRequest.path)
-  return _impl_.path_.Release();
-}
-inline void ListdirRequest::set_allocated_path(std::string* path) {
-  if (path != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.path_.SetAllocated(path, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.path_.IsDefault()) {
-    _impl_.path_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:fs.ListdirRequest.path)
 }
 
 // -------------------------------------------------------------------
@@ -3714,60 +3501,6 @@ inline void ListdirResponse::set_allocated_error(std::string* error) {
 
 // -------------------------------------------------------------------
 
-// RemoveRequest
-
-// string path = 1;
-inline void RemoveRequest::clear_path() {
-  _impl_.path_.ClearToEmpty();
-}
-inline const std::string& RemoveRequest::path() const {
-  // @@protoc_insertion_point(field_get:fs.RemoveRequest.path)
-  return _internal_path();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void RemoveRequest::set_path(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.path_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:fs.RemoveRequest.path)
-}
-inline std::string* RemoveRequest::mutable_path() {
-  std::string* _s = _internal_mutable_path();
-  // @@protoc_insertion_point(field_mutable:fs.RemoveRequest.path)
-  return _s;
-}
-inline const std::string& RemoveRequest::_internal_path() const {
-  return _impl_.path_.Get();
-}
-inline void RemoveRequest::_internal_set_path(const std::string& value) {
-  
-  _impl_.path_.Set(value, GetArenaForAllocation());
-}
-inline std::string* RemoveRequest::_internal_mutable_path() {
-  
-  return _impl_.path_.Mutable(GetArenaForAllocation());
-}
-inline std::string* RemoveRequest::release_path() {
-  // @@protoc_insertion_point(field_release:fs.RemoveRequest.path)
-  return _impl_.path_.Release();
-}
-inline void RemoveRequest::set_allocated_path(std::string* path) {
-  if (path != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.path_.SetAllocated(path, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.path_.IsDefault()) {
-    _impl_.path_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:fs.RemoveRequest.path)
-}
-
-// -------------------------------------------------------------------
-
 // RemoveResponse
 
 // bool success = 1;
@@ -3843,10 +3576,6 @@ inline void RemoveResponse::set_allocated_error(std::string* error) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

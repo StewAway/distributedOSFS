@@ -2,6 +2,10 @@
 #include <grpcpp/grpcpp.h>
 #include "filesystem.grpc.pb.h"
 #include "sfs.h"
+#include "fs_context.h"
+#include <mutex>
+#include <memory>
+#include <unordered_map>
 #include <iostream>
 #include <cstdlib>
 
@@ -11,62 +15,107 @@ using grpc::ServerContext;
 using grpc::Status;
 
 using fs::FileSystem;
-using fs::CreateRequest;
+
+using fs::MountRequest;
+using fs::MountResponse;
+
+using fs::FileRequest;
 using fs::CreateResponse;
-using fs::MkdirRequest;
 using fs::MkdirResponse;
-using fs::OpenRequest;
 using fs::OpenResponse;
-using fs::WriteRequest;
+
+using fs::WriteRequestMulti;
 using fs::WriteResponse;
-using fs::ReadRequest;
+
+using fs::ReadRequestMulti;
 using fs::ReadResponse;
-using fs::SeekRequest;
+
+using fs::SeekRequestMulti;
 using fs::SeekResponse;
-using fs::ListdirRequest;
+
 using fs::ListdirResponse;
-using fs::RemoveRequest;
 using fs::RemoveResponse;
 
 class FileSystemServiceImpl final : public FileSystem::Service {
+    std::mutex mu_;
+    int next_mount_id_ = 1;
+    std::unordered_map<int, std::unique_ptr<FSContext>> contexts_;
+
+    FSContext* get_ctx(int mid) {
+        auto it = contexts_.find(mid);
+        return it == contexts_.end() ? nullptr : it->second.get();
+    }
 public:
-    FileSystemServiceImpl() {
-        // Initialize the underlying Simple File System
-        sfs_init(); 
-        std::cout << "[fs_server] SFS initialized successfully.\n";
+    Status Mount(ServerContext*, const MountRequest* req, MountResponse* res) override {
+        std::lock_guard<std::mutex> lk(mu_);
+        int id = next_mount_id_++;
+        auto ctx = std::make_unique<FSContext>();
+        if (!ctx->init(req->disk_image()) {
+            res->set_error("Failed to init disk: " + req->disk_image());
+            return Status::OK;
+        }
+        context_[id] = std::move(ctx);
+        res->set_mount_id(id);
+        return Status::OK;
     }
 
-    Status Create(ServerContext* ctx, const CreateRequest* req, CreateResponse* res) override {
-        int inum = sfs_create(req->path());
+    Status Create(ServerContext*, const FileRequest* req, CreateResponse* res) override {
+        auto ctx = get_ctx(req->mount_id());
+        if (!ctx) {
+            res->set_error("Invalid mount_id"); 
+            return Status::OK; 
+        }
+        
+        int inum = sfs_create(*ctx, req->path());
         if (inum < 0) res->set_error("Create failed");
         else          res->set_inum(inum);
         return Status::OK;
     }
 
-    Status Mkdir(ServerContext* ctx, const MkdirRequest* req, MkdirResponse* res) override {
-        int inum = sfs_mkdir(req->path());
+    Status Mkdir(ServerContext*, const FileRequest* req, MkdirResponse* res) override {
+        auto ctx = get_ctx(req->mount_id());
+        if (!ctx) {
+            res->set_error("Invalid mount_id");
+            return Status::OK;
+        }
+        int inum = sfs_mkdir(*ctx, req->path());
         if (inum < 0) res->set_error("Mkdir failed");
         else          res->set_inum(inum);
         return Status::OK;
     }
 
-    Status Open(ServerContext* ctx, const OpenRequest* req, OpenResponse* res) override {
+    Status Open(ServerContext*, const FileRequest* req, OpenResponse* res) override {
+        auto ctx = get_ctx(req->mount_id());
+        if (!ctx) {
+            res->set_error("Invalid mount_id");
+            return Status::OK;
+        }
         int fd = sfs_open(req->filename());
         if (fd < 0) res->set_error("Open failed");
         else        res->set_fd(fd);
         return Status::OK;
     }
 
-    Status Write(ServerContext* ctx, const WriteRequest* req, WriteResponse* res) override {
-        int written = sfs_write(req->fd(), req->data().c_str(), req->data().size());
+    Status Write(ServerContext*, const WriteRequestMulti* req, WriteResponse* res) override {
+        auto ctx = get_ctx(req->mount_id());
+        if (!ctx) {
+            res->set_error("Invalid mount_id");
+            return Status::OK;
+        }
+        int written = sfs_write(*ctx, req->fd(), req->data().c_str(), req->data().size());
         res->set_success(written >= 0);
         if (written < 0) res->set_error("Write failed");
         return Status::OK;
     }
 
-    Status Read(ServerContext* ctx, const ReadRequest* req, ReadResponse* res) override {
+    Status Read(ServerContext*, const ReadRequestMulti* req, ReadResponse* res) override {
+        auto ctx = get_ctx(req->mount_id());
+        if (!ctx) {
+            res->set_error("Invalid mount_id");
+            return Status::OK;
+        }
         std::vector<char> buf(req->num_bytes());
-        int n = sfs_read(req->fd(), buf.data(), req->num_bytes());
+        int n = sfs_read(*ctx, req->fd(), buf.data(), req->num_bytes());
         if (n < 0) {
             res->set_error("Read failed");
         } else {
@@ -75,15 +124,25 @@ public:
         return Status::OK;
     }
 
-    Status Seek(ServerContext* ctx, const SeekRequest* req, SeekResponse* res) override {
-        bool ok = sfs_seek(req->fd(), req->offset(), req->whence());
+    Status Seek(ServerContext*, const SeekRequestMulti* req, SeekResponse* res) override {
+        auto ctx = get_ctx(req->mount_id());
+        if (!ctx) {
+            res->set_error("Invalid mount_id");
+            return Status::OK;
+        }
+        bool ok = sfs_seek(*ctx, req->fd(), req->offset(), req->whence());
         res->set_success(ok);
         if (!ok) res->set_error("Seek failed");
         return Status::OK;
     }
 
-    Status Listdir(ServerContext* ctx, const ListdirRequest* req, ListdirResponse* res) override {
-        auto names = sfs_listdir(req->path());
+    Status Listdir(ServerContext*, const FileRequest* req, ListdirResponse* res) override {
+        auto ctx = get_ctx(req->mount_id());
+        if (!ctx) {
+            res->set_error("Invalid mount_id");
+            return Status::OK;
+        }
+        auto names = sfs_listdir(*ctx, req->path());
 
         if (names.empty()) {
             res->set_error("Directory not found or not a directory");
@@ -95,8 +154,13 @@ public:
         return Status::OK;
     }
 
-    Status Remove(ServerContext* ctx, const RemoveRequest* req, RemoveResponse* res) override {
-        bool ok = sfs_remove(req->path());
+    Status Remove(ServerContext*, const FileRequest* req, RemoveResponse* res) override {
+        auto ctx = get_ctx(req->mount_id());
+        if (!ctx) {
+            res->set_error("Invalid mount_id");
+            return Status::OK;
+        }
+        bool ok = sfs_remove(*ctx, req->path());
         res->set_success(ok);
         if (!ok) res->set_error("Remove failed");
         return Status::OK;
