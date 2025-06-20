@@ -109,6 +109,16 @@ public:
         }
     }
 
+    void remove(const std::string& key) {
+        if (hashmap.find(key) != hashmap.end()) {
+            LinkedList* node = hashmap[key];
+            removeNode(node);
+            hashmap.erase(key);
+            delete node;
+            size--;
+        } 
+    }
+
     bool exists(const std::string& key) const {
         return hashmap.find(key) != hashmap.end();
     }

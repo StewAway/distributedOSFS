@@ -55,13 +55,13 @@ void parse_flags(int argc, char** argv, ServerConfig& config) {
 
 class KVStoreServiceImpl final : public KVStore::Service {
     private:
-	    std::unordered_map<std::string, std::string> store_;
 	    std::mutex mutex_; // thread safety
 	    WAL wal_;
-        LRUCache cache_;
+        DiskStore db_;
+        CacheController cache_;
     public:
-        
-        explicit KVStoreServiceImpl(std::string log_file, int cache_capacity) : wal_(log_file), cache_(cache_capacity) {
+        explicit KVStoreServiceImpl(std::string log_file, int cache_capacity) 
+            : wal_(log_file), db_("rocksdb_data/"), cache_(cache_capacity) {
             recoverFromLog();
         }
 
@@ -69,10 +69,10 @@ class KVStoreServiceImpl final : public KVStore::Service {
             auto logs = wal_.recover();
             for (const auto& entry : logs) {
                 if (entry.action == WALAction::PUT) {
-                    store_[entry.key] = entry.value;
+                    db_.put(entry.key, entry.value);
                     cache_.put(entry.key, entry.value);
                 } else {
-                    store_.erase(entry.key); 
+                    db_.remove(entry.key);
                 }
             }
             std::cout<<"[WAL] Recovery complete: "<<logs.size()<<" entries replayed.\n";
@@ -80,10 +80,12 @@ class KVStoreServiceImpl final : public KVStore::Service {
 
 	    Status Put(ServerContext* context, const PutRequest* request, PutReply* reply) override {
 		    std::lock_guard<std::mutex> lock(mutex_);
-			wal_.appendPut(request->key(), request->value());
-            store_[request->key()] = request->value();
+
+			wal_appendPut(request->key(), request->value());
+            db_.put(request->key(), request->value());
             cache_.put(request->key(), request->value());
-			std::cout<<"[Put] "<<request->key()<<" => "<<request->value()<<"\n";
+            
+            std::cout<<"[Put] "<<request->key()<<" => "<<request->value()<<"\n";
 			reply->set_success(true);
 			return Status::OK;			
 		}
@@ -92,18 +94,18 @@ class KVStoreServiceImpl final : public KVStore::Service {
 	        std::lock_guard<std::mutex> lock(mutex_);
             //std::cout<<"[Get] "<<request->key()<<"||||||||||||||||\n";
             //cache_.print();
-            auto hit = cache_.get(request->key());
-            if (hit) {
+            auto val = cache_.get(request->key());
+            if (val) {
                 reply->set_found(true);
-                reply->set_value(*hit);
+                reply->set_value(*val);
                 std::cout<<"[CacheHit]"<<request->key()<<"\n";
             } else {
-		        auto it = store_.find(request->key());
-	            if (it != store_.end()) { 
-		            reply->set_found(true);
+		        auto dval = db_.find(request->key());
+	            if (dval) { 
+		            cache_.put(request->key(), value);
+                    reply->set_found(true);
 			        reply->set_value(it->second);
-                    cache_.put(request->key(), it->second);
-			        std::cout<<"[StoreHit] "<<request->key()<<" => "<<it->second<<"\n";
+			        std::cout<<"[DbHit] "<<request->key()<<" => "<<it->second<<"\n";
 			    } else {
 			        reply->set_found(false);
 			        std::cout<<"[Miss] "<<request->key()<<" not Found.\n";
@@ -114,8 +116,9 @@ class KVStoreServiceImpl final : public KVStore::Service {
 		Status Delete(ServerContext* context, const DeleteRequest* request, DeleteReply* reply) override {
 	        std::lock_guard<std::mutex> lock(mutex_);
             wal_.appendDelete(request->key());
-		  	size_t erased = store_.erase(request->key());
-	        reply->set_success(erased > 0);
+	        db_.remove(request->key());
+            cache_remove(request->key());
+            reply->set_success(erased > 0);
 	        std::cout<<"[Delete] "<<request->key()<<(erased ? " deleted" : " not found")<<"\n";
 	        return Status::OK;
 		}

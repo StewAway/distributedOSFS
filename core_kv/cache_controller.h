@@ -22,6 +22,10 @@ public:
     void put(const std::string& key, const std::string& value) {
         cache_.put(key, value);
     }
+    
+    void remove(const std::string& key, const std::string& value) {
+        cache_.remove(key, value);
+    }
 
     void print_stats() const {
         std::cout<<"[CacheStats] Hits: "<<hits_<<",Misses: "<<misses_<<"\n";
