@@ -23,6 +23,7 @@
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/arena.h>
 #include <google/protobuf/arenastring.h>
+#include <google/protobuf/generated_message_bases.h>
 #include <google/protobuf/generated_message_util.h>
 #include <google/protobuf/metadata_lite.h>
 #include <google/protobuf/generated_message_reflection.h>
@@ -63,6 +64,9 @@ extern PutReplyDefaultTypeInternal _PutReply_default_instance_;
 class PutRequest;
 struct PutRequestDefaultTypeInternal;
 extern PutRequestDefaultTypeInternal _PutRequest_default_instance_;
+class Void;
+struct VoidDefaultTypeInternal;
+extern VoidDefaultTypeInternal _Void_default_instance_;
 }  // namespace kvstore
 PROTOBUF_NAMESPACE_OPEN
 template<> ::kvstore::DeleteReply* Arena::CreateMaybeMessage<::kvstore::DeleteReply>(Arena*);
@@ -71,10 +75,129 @@ template<> ::kvstore::GetReply* Arena::CreateMaybeMessage<::kvstore::GetReply>(A
 template<> ::kvstore::GetRequest* Arena::CreateMaybeMessage<::kvstore::GetRequest>(Arena*);
 template<> ::kvstore::PutReply* Arena::CreateMaybeMessage<::kvstore::PutReply>(Arena*);
 template<> ::kvstore::PutRequest* Arena::CreateMaybeMessage<::kvstore::PutRequest>(Arena*);
+template<> ::kvstore::Void* Arena::CreateMaybeMessage<::kvstore::Void>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace kvstore {
 
 // ===================================================================
+
+class Void final :
+    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:kvstore.Void) */ {
+ public:
+  inline Void() : Void(nullptr) {}
+  explicit PROTOBUF_CONSTEXPR Void(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  Void(const Void& from);
+  Void(Void&& from) noexcept
+    : Void() {
+    *this = ::std::move(from);
+  }
+
+  inline Void& operator=(const Void& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Void& operator=(Void&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Void& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Void* internal_default_instance() {
+    return reinterpret_cast<const Void*>(
+               &_Void_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  friend void swap(Void& a, Void& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Void* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Void* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Void* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<Void>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const Void& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const Void& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+  public:
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "kvstore.Void";
+  }
+  protected:
+  explicit Void(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:kvstore.Void)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+  };
+  friend struct ::TableStruct_kvstore_2eproto;
+};
+// -------------------------------------------------------------------
 
 class PutRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:kvstore.PutRequest) */ {
@@ -124,7 +247,7 @@ class PutRequest final :
                &_PutRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    0;
+    1;
 
   friend void swap(PutRequest& a, PutRequest& b) {
     a.Swap(&b);
@@ -293,7 +416,7 @@ class PutReply final :
                &_PutReply_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    2;
 
   friend void swap(PutReply& a, PutReply& b) {
     a.Swap(&b);
@@ -441,7 +564,7 @@ class GetRequest final :
                &_GetRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   friend void swap(GetRequest& a, GetRequest& b) {
     a.Swap(&b);
@@ -594,7 +717,7 @@ class GetReply final :
                &_GetReply_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(GetReply& a, GetReply& b) {
     a.Swap(&b);
@@ -758,7 +881,7 @@ class DeleteRequest final :
                &_DeleteRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(DeleteRequest& a, DeleteRequest& b) {
     a.Swap(&b);
@@ -911,7 +1034,7 @@ class DeleteReply final :
                &_DeleteReply_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(DeleteReply& a, DeleteReply& b) {
     a.Swap(&b);
@@ -1018,6 +1141,10 @@ class DeleteReply final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// Void
+
+// -------------------------------------------------------------------
+
 // PutRequest
 
 // string key = 1;
@@ -1353,6 +1480,8 @@ inline void DeleteReply::set_success(bool value) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -6,8 +6,10 @@ service KVStore {
 	rpc Put (PutRequest) returns (PutReply);
 	rpc Get (GetRequest) returns (GetReply);
 	rpc Delete (DeleteRequest) returns (DeleteReply);	
+    rpc PrintStats(Void) returns (Void);
 }
 
+message Void {}
 
 message PutRequest {
 	string key = 1;

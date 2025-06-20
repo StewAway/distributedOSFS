@@ -23,11 +23,17 @@ public:
         cache_.put(key, value);
     }
     
-    void remove(const std::string& key, const std::string& value) {
-        cache_.remove(key, value);
+    void remove(const std::string& key) {
+        cache_.remove(key);
     }
 
     void print_stats() const {
-        std::cout<<"[CacheStats] Hits: "<<hits_<<",Misses: "<<misses_<<"\n";
+        std::cout << "Total GETs: " << hits_ + misses_ << "\n";
+        std::cout << "Cache Hits: " << hits_ << "\n";
+        std::cout << "Cache Misses: " << misses_ << "\n";
+        if (hits_ + misses_ != 0) {
+            double hit_rate = 100.0 * hits_ / (hits_ + misses_);
+            std::cout << "Hit Rate: " << hit_rate << "%\n";
+        }
     }
 };

@@ -21,6 +21,17 @@ namespace _pb = ::PROTOBUF_NAMESPACE_ID;
 namespace _pbi = _pb::internal;
 
 namespace kvstore {
+PROTOBUF_CONSTEXPR Void::Void(
+    ::_pbi::ConstantInitialized) {}
+struct VoidDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR VoidDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~VoidDefaultTypeInternal() {}
+  union {
+    Void _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 VoidDefaultTypeInternal _Void_default_instance_;
 PROTOBUF_CONSTEXPR PutRequest::PutRequest(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
@@ -102,11 +113,17 @@ struct DeleteReplyDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeleteReplyDefaultTypeInternal _DeleteReply_default_instance_;
 }  // namespace kvstore
-static ::_pb::Metadata file_level_metadata_kvstore_2eproto[6];
+static ::_pb::Metadata file_level_metadata_kvstore_2eproto[7];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_kvstore_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_kvstore_2eproto = nullptr;
 
 const uint32_t TableStruct_kvstore_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::kvstore::Void, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::kvstore::PutRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -153,15 +170,17 @@ const uint32_t TableStruct_kvstore_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   PROTOBUF_FIELD_OFFSET(::kvstore::DeleteReply, _impl_.success_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::kvstore::PutRequest)},
-  { 8, -1, -1, sizeof(::kvstore::PutReply)},
-  { 15, -1, -1, sizeof(::kvstore::GetRequest)},
-  { 22, -1, -1, sizeof(::kvstore::GetReply)},
-  { 30, -1, -1, sizeof(::kvstore::DeleteRequest)},
-  { 37, -1, -1, sizeof(::kvstore::DeleteReply)},
+  { 0, -1, -1, sizeof(::kvstore::Void)},
+  { 6, -1, -1, sizeof(::kvstore::PutRequest)},
+  { 14, -1, -1, sizeof(::kvstore::PutReply)},
+  { 21, -1, -1, sizeof(::kvstore::GetRequest)},
+  { 28, -1, -1, sizeof(::kvstore::GetReply)},
+  { 36, -1, -1, sizeof(::kvstore::DeleteRequest)},
+  { 43, -1, -1, sizeof(::kvstore::DeleteReply)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
+  &::kvstore::_Void_default_instance_._instance,
   &::kvstore::_PutRequest_default_instance_._instance,
   &::kvstore::_PutReply_default_instance_._instance,
   &::kvstore::_GetRequest_default_instance_._instance,
@@ -171,22 +190,24 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 
 const char descriptor_table_protodef_kvstore_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\rkvstore.proto\022\007kvstore\"(\n\nPutRequest\022\013"
-  "\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"\033\n\010PutReply\022\017"
-  "\n\007success\030\001 \001(\010\"\031\n\nGetRequest\022\013\n\003key\030\001 \001"
-  "(\t\"(\n\010GetReply\022\r\n\005found\030\001 \001(\010\022\r\n\005value\030\002"
-  " \001(\t\"\034\n\rDeleteRequest\022\013\n\003key\030\001 \001(\t\"\036\n\013De"
-  "leteReply\022\017\n\007success\030\001 \001(\0102\237\001\n\007KVStore\022-"
-  "\n\003Put\022\023.kvstore.PutRequest\032\021.kvstore.Put"
-  "Reply\022-\n\003Get\022\023.kvstore.GetRequest\032\021.kvst"
-  "ore.GetReply\0226\n\006Delete\022\026.kvstore.DeleteR"
-  "equest\032\024.kvstore.DeleteReplyb\006proto3"
+  "\n\rkvstore.proto\022\007kvstore\"\006\n\004Void\"(\n\nPutR"
+  "equest\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"\033\n\010Pu"
+  "tReply\022\017\n\007success\030\001 \001(\010\"\031\n\nGetRequest\022\013\n"
+  "\003key\030\001 \001(\t\"(\n\010GetReply\022\r\n\005found\030\001 \001(\010\022\r\n"
+  "\005value\030\002 \001(\t\"\034\n\rDeleteRequest\022\013\n\003key\030\001 \001"
+  "(\t\"\036\n\013DeleteReply\022\017\n\007success\030\001 \001(\0102\313\001\n\007K"
+  "VStore\022-\n\003Put\022\023.kvstore.PutRequest\032\021.kvs"
+  "tore.PutReply\022-\n\003Get\022\023.kvstore.GetReques"
+  "t\032\021.kvstore.GetReply\0226\n\006Delete\022\026.kvstore"
+  ".DeleteRequest\032\024.kvstore.DeleteReply\022*\n\n"
+  "PrintStats\022\r.kvstore.Void\032\r.kvstore.Void"
+  "b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_kvstore_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_kvstore_2eproto = {
-    false, false, 396, descriptor_table_protodef_kvstore_2eproto,
+    false, false, 448, descriptor_table_protodef_kvstore_2eproto,
     "kvstore.proto",
-    &descriptor_table_kvstore_2eproto_once, nullptr, 0, 6,
+    &descriptor_table_kvstore_2eproto_once, nullptr, 0, 7,
     schemas, file_default_instances, TableStruct_kvstore_2eproto::offsets,
     file_level_metadata_kvstore_2eproto, file_level_enum_descriptors_kvstore_2eproto,
     file_level_service_descriptors_kvstore_2eproto,
@@ -198,6 +219,46 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_kvstore_
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_kvstore_2eproto(&descriptor_table_kvstore_2eproto);
 namespace kvstore {
+
+// ===================================================================
+
+class Void::_Internal {
+ public:
+};
+
+Void::Void(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+  // @@protoc_insertion_point(arena_constructor:kvstore.Void)
+}
+Void::Void(const Void& from)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  Void* const _this = this; (void)_this;
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:kvstore.Void)
+}
+
+
+
+
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Void::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Void::GetClassData() const { return &_class_data_; }
+
+
+
+
+
+
+
+::PROTOBUF_NAMESPACE_ID::Metadata Void::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_kvstore_2eproto_getter, &descriptor_table_kvstore_2eproto_once,
+      file_level_metadata_kvstore_2eproto[0]);
+}
 
 // ===================================================================
 
@@ -449,7 +510,7 @@ void PutRequest::InternalSwap(PutRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata PutRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_kvstore_2eproto_getter, &descriptor_table_kvstore_2eproto_once,
-      file_level_metadata_kvstore_2eproto[0]);
+      file_level_metadata_kvstore_2eproto[1]);
 }
 
 // ===================================================================
@@ -627,7 +688,7 @@ void PutReply::InternalSwap(PutReply* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata PutReply::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_kvstore_2eproto_getter, &descriptor_table_kvstore_2eproto_once,
-      file_level_metadata_kvstore_2eproto[1]);
+      file_level_metadata_kvstore_2eproto[2]);
 }
 
 // ===================================================================
@@ -830,7 +891,7 @@ void GetRequest::InternalSwap(GetRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata GetRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_kvstore_2eproto_getter, &descriptor_table_kvstore_2eproto_once,
-      file_level_metadata_kvstore_2eproto[2]);
+      file_level_metadata_kvstore_2eproto[3]);
 }
 
 // ===================================================================
@@ -1060,7 +1121,7 @@ void GetReply::InternalSwap(GetReply* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata GetReply::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_kvstore_2eproto_getter, &descriptor_table_kvstore_2eproto_once,
-      file_level_metadata_kvstore_2eproto[3]);
+      file_level_metadata_kvstore_2eproto[4]);
 }
 
 // ===================================================================
@@ -1263,7 +1324,7 @@ void DeleteRequest::InternalSwap(DeleteRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata DeleteRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_kvstore_2eproto_getter, &descriptor_table_kvstore_2eproto_once,
-      file_level_metadata_kvstore_2eproto[4]);
+      file_level_metadata_kvstore_2eproto[5]);
 }
 
 // ===================================================================
@@ -1441,12 +1502,16 @@ void DeleteReply::InternalSwap(DeleteReply* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata DeleteReply::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_kvstore_2eproto_getter, &descriptor_table_kvstore_2eproto_once,
-      file_level_metadata_kvstore_2eproto[5]);
+      file_level_metadata_kvstore_2eproto[6]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace kvstore
 PROTOBUF_NAMESPACE_OPEN
+template<> PROTOBUF_NOINLINE ::kvstore::Void*
+Arena::CreateMaybeMessage< ::kvstore::Void >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::kvstore::Void >(arena);
+}
 template<> PROTOBUF_NOINLINE ::kvstore::PutRequest*
 Arena::CreateMaybeMessage< ::kvstore::PutRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::kvstore::PutRequest >(arena);

@@ -25,6 +25,7 @@ static const char* KVStore_method_names[] = {
   "/kvstore.KVStore/Put",
   "/kvstore.KVStore/Get",
   "/kvstore.KVStore/Delete",
+  "/kvstore.KVStore/PrintStats",
 };
 
 std::unique_ptr< KVStore::Stub> KVStore::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -37,6 +38,7 @@ KVStore::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, c
   : channel_(channel), rpcmethod_Put_(KVStore_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_Get_(KVStore_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_Delete_(KVStore_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PrintStats_(KVStore_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status KVStore::Stub::Put(::grpc::ClientContext* context, const ::kvstore::PutRequest& request, ::kvstore::PutReply* response) {
@@ -108,6 +110,29 @@ void KVStore::Stub::async::Delete(::grpc::ClientContext* context, const ::kvstor
   return result;
 }
 
+::grpc::Status KVStore::Stub::PrintStats(::grpc::ClientContext* context, const ::kvstore::Void& request, ::kvstore::Void* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::kvstore::Void, ::kvstore::Void, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_PrintStats_, context, request, response);
+}
+
+void KVStore::Stub::async::PrintStats(::grpc::ClientContext* context, const ::kvstore::Void* request, ::kvstore::Void* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::kvstore::Void, ::kvstore::Void, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PrintStats_, context, request, response, std::move(f));
+}
+
+void KVStore::Stub::async::PrintStats(::grpc::ClientContext* context, const ::kvstore::Void* request, ::kvstore::Void* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PrintStats_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::kvstore::Void>* KVStore::Stub::PrepareAsyncPrintStatsRaw(::grpc::ClientContext* context, const ::kvstore::Void& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::kvstore::Void, ::kvstore::Void, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_PrintStats_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::kvstore::Void>* KVStore::Stub::AsyncPrintStatsRaw(::grpc::ClientContext* context, const ::kvstore::Void& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncPrintStatsRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 KVStore::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       KVStore_method_names[0],
@@ -139,6 +164,16 @@ KVStore::Service::Service() {
              ::kvstore::DeleteReply* resp) {
                return service->Delete(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      KVStore_method_names[3],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< KVStore::Service, ::kvstore::Void, ::kvstore::Void, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](KVStore::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::kvstore::Void* req,
+             ::kvstore::Void* resp) {
+               return service->PrintStats(ctx, req, resp);
+             }, this)));
 }
 
 KVStore::Service::~Service() {
@@ -159,6 +194,13 @@ KVStore::Service::~Service() {
 }
 
 ::grpc::Status KVStore::Service::Delete(::grpc::ServerContext* context, const ::kvstore::DeleteRequest* request, ::kvstore::DeleteReply* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status KVStore::Service::PrintStats(::grpc::ServerContext* context, const ::kvstore::Void* request, ::kvstore::Void* response) {
   (void) context;
   (void) request;
   (void) response;

@@ -8,9 +8,9 @@
 #include "kvstore.grpc.pb.h"
 
 #include "wal.h"
+#include "disk_store.h"
+#include "cache_controller.h"
 WAL wal("wal.log");
-
-#include "lru_cache.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -60,6 +60,10 @@ class KVStoreServiceImpl final : public KVStore::Service {
         DiskStore db_;
         CacheController cache_;
     public:
+        Status PrintStats(ServerContext* context, const kvstore::Void* request, kvstore::Void* response) override {
+            cache_.print_stats();  // your existing stats printer
+            return Status::OK;
+        }
         explicit KVStoreServiceImpl(std::string log_file, int cache_capacity) 
             : wal_(log_file), db_("rocksdb_data/"), cache_(cache_capacity) {
             recoverFromLog();
@@ -81,7 +85,7 @@ class KVStoreServiceImpl final : public KVStore::Service {
 	    Status Put(ServerContext* context, const PutRequest* request, PutReply* reply) override {
 		    std::lock_guard<std::mutex> lock(mutex_);
 
-			wal_appendPut(request->key(), request->value());
+			wal_.appendPut(request->key(), request->value());
             db_.put(request->key(), request->value());
             cache_.put(request->key(), request->value());
             
@@ -100,12 +104,13 @@ class KVStoreServiceImpl final : public KVStore::Service {
                 reply->set_value(*val);
                 std::cout<<"[CacheHit]"<<request->key()<<"\n";
             } else {
-		        auto dval = db_.find(request->key());
-	            if (dval) { 
-		            cache_.put(request->key(), value);
+		        std::string dval;
+                bool dget  = db_.get(request->key(), dval);
+	            if (dget) { 
+		            cache_.put(request->key(), dval);
                     reply->set_found(true);
-			        reply->set_value(it->second);
-			        std::cout<<"[DbHit] "<<request->key()<<" => "<<it->second<<"\n";
+			        reply->set_value(dval);
+			        std::cout<<"[DbHit] "<<request->key()<<" => "<<dval<<"\n";
 			    } else {
 			        reply->set_found(false);
 			        std::cout<<"[Miss] "<<request->key()<<" not Found.\n";
@@ -116,10 +121,11 @@ class KVStoreServiceImpl final : public KVStore::Service {
 		Status Delete(ServerContext* context, const DeleteRequest* request, DeleteReply* reply) override {
 	        std::lock_guard<std::mutex> lock(mutex_);
             wal_.appendDelete(request->key());
-	        db_.remove(request->key());
-            cache_remove(request->key());
-            reply->set_success(erased > 0);
-	        std::cout<<"[Delete] "<<request->key()<<(erased ? " deleted" : " not found")<<"\n";
+	        bool removed = true;
+            removed &= db_.remove(request->key());
+            cache_.remove(request->key());
+            reply->set_success(removed);
+	        std::cout<<"[Delete] "<<request->key()<<(removed ? " deleted" : " not found")<<"\n";
 	        return Status::OK;
 		}
 };

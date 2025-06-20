@@ -1,4 +1,3 @@
-#pragma once
 #include <unordered_map>
 #include <string>
 #include <optional>
@@ -62,7 +61,6 @@ public:
             current = next;
         }
     }
-
     void print() {
         std::cout<<"Start printing LRU cache----------\n";
         std::cout<<"Print hashmap:\n";
