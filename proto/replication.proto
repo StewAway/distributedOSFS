@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package replication;
+
+service Replication {
+    rpc AppendEntries(AppendRequest) returns (AppendReply);
+    rpc Heartbeat(HeartbeatRequest) returns (HeartbeatReply);
+}
+
+message AppendRequest {
+    int32 term = 1;
+    string leader_id = 2;
+    repeated string entries = 3;
+}
+
+message AppendReply {
+    bool success = 1;
+    int32 follower_id = 2;
+}
+
+message HeartbeatRequest {
+    int32 term = 1;
+    string leader_id = 2;
+}
+
+message HeartbeatReply {
+    bool ack = 1;
+    int32 follower_id = 2;
+}
