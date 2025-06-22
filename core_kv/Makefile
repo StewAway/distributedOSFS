@@ -18,7 +18,7 @@ test_wal: test_wal.cpp wal.o
 test_lru_cache: test_lru_cache.cpp
 	$(XX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-benchmark_client: test_benchmark_client.cpp $(PROTO_SRCS)
+benchmark_client: benchmark_client.cpp $(PROTO_SRCS)
 	$(XX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 wal.o: wal.cpp wal.h

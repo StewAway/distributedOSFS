@@ -139,9 +139,11 @@ int main(int argc, char** argv) {
     parse_flags(argc, argv, config);
 
     std::string server_address = "0.0.0.0:" + config.port;
-
+    std::string cache_policy = "LRU";
+    if (config.cache_policy == CachePolicy::LFU) cache_policy = "LFU";
     std::cout << "[Info] Starting server on " << server_address
               << " with cache_capacity=" << config.cache_capacity
+              << " with cache_policy=" << cache_policy
               << " log_file=" << config.log_file << "\n";
 
     KVStoreServiceImpl service(config.log_file, config.cache_capacity, config.cache_policy);  // pass as needed
