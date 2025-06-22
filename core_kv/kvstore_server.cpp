@@ -28,6 +28,7 @@ struct ServerConfig {
     int cache_capacity = 1000;
     std::string port = "50051";
     std::string log_file = "wal.log";
+    CachePolicy cache_policy = CachePolicy::LRU;
     // Add more as needed
 };
 
@@ -49,6 +50,9 @@ void parse_flags(int argc, char** argv, ServerConfig& config) {
             config.port = val;
         } else if (auto val = extract_flag_value(arg, "--log_file="); !val.empty()) {
             config.log_file = val;
+        } else if (auto val = extract_flag_value(arg, "--cache_policy="); !val.empty()) {
+            if (val == "LFU") config.cache_policy = CachePolicy::LFU;
+            else config.cache_policy = CachePolicy::LRU;
         }
     }
 }
@@ -64,8 +68,8 @@ class KVStoreServiceImpl final : public KVStore::Service {
             cache_.print_stats();  // your existing stats printer
             return Status::OK;
         }
-        explicit KVStoreServiceImpl(std::string log_file, int cache_capacity) 
-            : wal_(log_file), db_("rocksdb_data/"), cache_(cache_capacity) {
+        explicit KVStoreServiceImpl(std::string log_file, int cache_capacity, CachePolicy cache_policy) 
+            : wal_(log_file), db_("rocksdb_data/"), cache_(cache_capacity, cache_policy) {
             recoverFromLog();
         }
 
@@ -140,7 +144,7 @@ int main(int argc, char** argv) {
               << " with cache_capacity=" << config.cache_capacity
               << " log_file=" << config.log_file << "\n";
 
-    KVStoreServiceImpl service(config.log_file, config.cache_capacity);  // pass as needed
+    KVStoreServiceImpl service(config.log_file, config.cache_capacity, config.cache_policy);  // pass as needed
 
     ServerBuilder builder;
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
@@ -151,4 +155,3 @@ int main(int argc, char** argv) {
     server->Wait();
     return 0;
 }
-

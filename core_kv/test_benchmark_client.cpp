@@ -96,8 +96,8 @@ int main(int argc, char** argv) {
     std::string server_address = "localhost:50051";
     KVStoreClient client(grpc::CreateChannel(server_address, grpc::InsecureChannelCredentials()));
 
-    int n_keys = 10000;
-    int repeats = 100000;
+    int n_keys = 10000000;
+    int repeats = 100000000;
     benchmark_gets(client, n_keys, repeats);
     return 0;
 }
