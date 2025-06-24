@@ -3,27 +3,26 @@ syntax = "proto3";
 package replication;
 
 service Replication {
-    rpc AppendEntries(AppendRequest) returns (AppendReply);
+    // Called by leader to replicate a kv write
+    rpc ReplicatePut(ReplicatePutRequest) returns (ReplicatePutReply);
+    // Called by leader to check if the follower is alive
     rpc Heartbeat(HeartbeatRequest) returns (HeartbeatReply);
 }
 
-message AppendRequest {
-    int32 term = 1;
-    string leader_id = 2;
-    repeated string entries = 3;
+message ReplicatePutRequest {
+    string key = 1;
+    string value = 2;
 }
 
-message AppendReply {
-    bool success = 1;
-    int32 follower_id = 2;
+message ReplicatePutReply {
+    string success = 1;
 }
 
 message HeartbeatRequest {
-    int32 term = 1;
-    string leader_id = 2;
+    string leader_id = 1;
 }
 
 message HeartbeatReply {
-    bool ack = 1;
-    int32 follower_id = 2;
+    bool alive = 1;
+    string follower_id = 2;
 }
