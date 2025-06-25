@@ -37,7 +37,7 @@ struct ReplicatePutRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReplicatePutRequestDefaultTypeInternal _ReplicatePutRequest_default_instance_;
 PROTOBUF_CONSTEXPR ReplicatePutReply::ReplicatePutReply(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.success_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+    /*decltype(_impl_.success_)*/false
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ReplicatePutReplyDefaultTypeInternal {
   PROTOBUF_CONSTEXPR ReplicatePutReplyDefaultTypeInternal()
@@ -130,7 +130,7 @@ const char descriptor_table_protodef_replication_2eproto[] PROTOBUF_SECTION_VARI
   "\n\021replication.proto\022\013replication\"1\n\023Repl"
   "icatePutRequest\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 "
   "\001(\t\"$\n\021ReplicatePutReply\022\017\n\007success\030\001 \001("
-  "\t\"%\n\020HeartbeatRequest\022\021\n\tleader_id\030\001 \001(\t"
+  "\010\"%\n\020HeartbeatRequest\022\021\n\tleader_id\030\001 \001(\t"
   "\"4\n\016HeartbeatReply\022\r\n\005alive\030\001 \001(\010\022\023\n\013fol"
   "lower_id\030\002 \001(\t2\250\001\n\013Replication\022P\n\014Replic"
   "atePut\022 .replication.ReplicatePutRequest"
@@ -428,14 +428,7 @@ ReplicatePutReply::ReplicatePutReply(const ReplicatePutReply& from)
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.success_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.success_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_success().empty()) {
-    _this->_impl_.success_.Set(from._internal_success(), 
-      _this->GetArenaForAllocation());
-  }
+  _this->_impl_.success_ = from._impl_.success_;
   // @@protoc_insertion_point(copy_constructor:replication.ReplicatePutReply)
 }
 
@@ -444,13 +437,9 @@ inline void ReplicatePutReply::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.success_){}
+      decltype(_impl_.success_){false}
     , /*decltype(_impl_._cached_size_)*/{}
   };
-  _impl_.success_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.success_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 ReplicatePutReply::~ReplicatePutReply() {
@@ -464,7 +453,6 @@ ReplicatePutReply::~ReplicatePutReply() {
 
 inline void ReplicatePutReply::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.success_.Destroy();
 }
 
 void ReplicatePutReply::SetCachedSize(int size) const {
@@ -477,7 +465,7 @@ void ReplicatePutReply::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.success_.ClearToEmpty();
+  _impl_.success_ = false;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -487,13 +475,11 @@ const char* ReplicatePutReply::_InternalParse(const char* ptr, ::_pbi::ParseCont
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string success = 1;
+      // bool success = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_success();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          _impl_.success_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "replication.ReplicatePutReply.success"));
         } else
           goto handle_unusual;
         continue;
@@ -526,14 +512,10 @@ uint8_t* ReplicatePutReply::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string success = 1;
-  if (!this->_internal_success().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_success().data(), static_cast<int>(this->_internal_success().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "replication.ReplicatePutReply.success");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_success(), target);
+  // bool success = 1;
+  if (this->_internal_success() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(1, this->_internal_success(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -552,11 +534,9 @@ size_t ReplicatePutReply::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string success = 1;
-  if (!this->_internal_success().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_success());
+  // bool success = 1;
+  if (this->_internal_success() != 0) {
+    total_size += 1 + 1;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -577,7 +557,7 @@ void ReplicatePutReply::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, cons
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_success().empty()) {
+  if (from._internal_success() != 0) {
     _this->_internal_set_success(from._internal_success());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -596,13 +576,8 @@ bool ReplicatePutReply::IsInitialized() const {
 
 void ReplicatePutReply::InternalSwap(ReplicatePutReply* other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.success_, lhs_arena,
-      &other->_impl_.success_, rhs_arena
-  );
+  swap(_impl_.success_, other->_impl_.success_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ReplicatePutReply::GetMetadata() const {

@@ -2,7 +2,7 @@ XX = g++
 CXXFLAGS = -std=c++17 `pkg-config --cflags grpc++ grpc protobuf` -I/usr/local/include
 LDFLAGS = `pkg-config --libs grpc++ grpc protobuf` -L/usr/local/lib -lrocksdb
 
-PROTO_SRCS = kvstore.pb.cc kvstore.grpc.pb.cc
+PROTO_SRCS = kvstore.pb.cc kvstore.grpc.pb.cc replication.pb.cc replication.grpc.pb.cc
 
 all: kvstore_server kvstore_client test_wal test_lru_cache benchmark_client
 
