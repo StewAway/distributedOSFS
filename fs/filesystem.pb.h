@@ -230,6 +230,7 @@ class MountRequest final :
 
   enum : int {
     kDiskImageFieldNumber = 1,
+    kEnableCacheFieldNumber = 2,
   };
   // string disk_image = 1;
   void clear_disk_image();
@@ -245,6 +246,15 @@ class MountRequest final :
   std::string* _internal_mutable_disk_image();
   public:
 
+  // bool enable_cache = 2;
+  void clear_enable_cache();
+  bool enable_cache() const;
+  void set_enable_cache(bool value);
+  private:
+  bool _internal_enable_cache() const;
+  void _internal_set_enable_cache(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:fs.MountRequest)
  private:
   class _Internal;
@@ -254,6 +264,7 @@ class MountRequest final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr disk_image_;
+    bool enable_cache_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -2504,6 +2515,26 @@ inline void MountRequest::set_allocated_disk_image(std::string* disk_image) {
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:fs.MountRequest.disk_image)
+}
+
+// bool enable_cache = 2;
+inline void MountRequest::clear_enable_cache() {
+  _impl_.enable_cache_ = false;
+}
+inline bool MountRequest::_internal_enable_cache() const {
+  return _impl_.enable_cache_;
+}
+inline bool MountRequest::enable_cache() const {
+  // @@protoc_insertion_point(field_get:fs.MountRequest.enable_cache)
+  return _internal_enable_cache();
+}
+inline void MountRequest::_internal_set_enable_cache(bool value) {
+  
+  _impl_.enable_cache_ = value;
+}
+inline void MountRequest::set_enable_cache(bool value) {
+  _internal_set_enable_cache(value);
+  // @@protoc_insertion_point(field_set:fs.MountRequest.enable_cache)
 }
 
 // -------------------------------------------------------------------

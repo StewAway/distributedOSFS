@@ -56,7 +56,13 @@ public:
             res->set_error("Failed to initialize FS on " + req->disk_image());
             return Status::OK;
         }
-
+        
+        ctx->use_cache = req->enable_cache();
+        if (ctx.use_cache) {
+            const size_t block_size = BLOCK_SIZE;
+            const size_t cache_blocks = CACHE_NUM_BLOCKS;
+            ctx->init_cahce(cache_blocks, block_size);
+        } 
         contexts_[id] = std::move(ctx);
         res->set_mount_id(id);
         return Status::OK;

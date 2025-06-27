@@ -14,7 +14,7 @@ service FileSystem {
     rpc Remove(FileRequest) returns (RemoveResponse);
 }
 
-message MountRequest { string disk_image = 1; }
+message MountRequest { string disk_image = 1; bool enable_cache = 2;}
 message MountResponse { int32 mount_id = 1; string error = 2; }
 
 message FileRequest { int32 mount_id = 1; string path = 2; }
