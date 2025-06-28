@@ -23,6 +23,7 @@ A personal systems project in two complementary parts:
 
 ### Architecture
 
+```bash
           +-----------------+
           |  Client         |
           +-----------------+
@@ -42,6 +43,7 @@ A personal systems project in two complementary parts:
     |  recovery)|  |  recovery)|
     +-----------+  +-----------+
 
+```
 
 ### Performance
 
@@ -50,7 +52,7 @@ A personal systems project in two complementary parts:
 
 ---
 
-## Phase 5: Simple File System (SFS) with LRU Block Cache
+## Simple File System (SFS) with LRU Block Cache
 
 ### Overview
 
