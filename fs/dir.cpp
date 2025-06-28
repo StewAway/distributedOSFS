@@ -23,7 +23,7 @@ int dir_lookup(FSContext &ctx, int dir_inum, const std::string &name) {
         if (ctx.use_cache) {
             auto& data = ctx.cache_controller->getBlock(ctx.mount_id, block
         } else {
-        
+            if (!ctx.disk->disk_read(dir_inode.direct[i], block)) return false;        
         }
         
 
@@ -41,12 +41,23 @@ int dir_lookup(FSContext &ctx, int dir_inum, const std::string &name) {
     // Search in indirect blocks
     if (dir_inode.indirect != 0) {
         uint32_t indirect_block[NINDIRECT];
-        if (!ctx.disk.disk_read(dir_inode.indirect, (char*)indirect_block)) return false;
+        //if (!ctx.disk.disk_read(dir_inode.indirect, (char*)indirect_block)) return false;
+        if (ctx.use_cache) {
+            auto& data = ctx.cache_controller->getBlock(dir_inode.indirect);
+            std::memcpy((char*)indirect_block, data.data(), BLOCK_SIZE);
+        } else {
+            if (!ctx.disk->disk_read(dir_inode.indirect, (char*)indirect_block)) return false;
+        }
 
         for (int k = 0; k < NINDIRECT; ++k) {
             if (indirect_block[k] == 0) continue;
-            if (!ctx.disk.disk_read(indirect_block[k], block)) return false;
-
+            //if (!ctx.disk.disk_read(indirect_block[k], block)) return false;
+            if (ctx.use_cache) {
+                auto& data = ctx.cache_controller->getBlock(indirect_block[k]);
+                std::memcpy(block, data.data(), BLOCK_SIZE);
+            } else {
+                if (!ctx.disk->disk_read(indirect_block[k], block)) return false;
+            }
             DirEntry* entries = (DirEntry*) block;
             int num_entries = BLOCK_SIZE / sizeof(DirEntry);
 
@@ -74,7 +85,13 @@ int dir_add(FSContext &ctx, int dir_inum, const std::string &name, int inum) {
             inode_write(ctx, dir_inum, dir_inode);
             std::memset(block, 0, sizeof(block));
         } else {
-            if (!ctx.disk.disk_read(dir_inode.direct[i], block)) return false;
+            //if (!ctx.disk.disk_read(dir_inode.direct[i], block)) return false;
+            if (ctx.use_cache) {
+                auto& data = ctx.cache_controller->getBlock(dir_inode.direct[i]);
+                std::memcpy(block, data.data(), BLOCK_SIZE);
+            } else {
+                if (!ctx.disk->disk_read(dir_inode.direct[i], block)) return false;
+            }
         }
 
         DirEntry* entries = (DirEntry*) block;
@@ -85,6 +102,10 @@ int dir_add(FSContext &ctx, int dir_inum, const std::string &name, int inum) {
                 entries[j].inum = inum;
                 std::strncpy(entries[j].name, name.c_str(), sizeof(entries[j].name) - 1);
                 entries[j].name[sizeof(entries[j].name) - 1] = '\0';
+                if (ctx.use_cache) {
+                    ctx.cache_controller->writeBlock(dir_inode.direct[i], block);
+                    return true;
+                } 
                 return ctx.disk.disk_write(dir_inode.direct[i], block);
             }
         }
@@ -95,21 +116,45 @@ int dir_add(FSContext &ctx, int dir_inum, const std::string &name, int inum) {
         dir_inode.indirect = block_alloc(ctx);
         inode_write(ctx, dir_inum, dir_inode);
         char zero[BLOCK_SIZE] = {0};
-        if (!ctx.disk.disk_write(dir_inode.indirect, zero)) return false;
+        //if (!ctx.disk.disk_write(dir_inode.indirect, zero)) return false;
+        if (ctx.use_cache) {
+            ctx.cache_controller->writeBlock(dir_inode.indirect, zero);
+        } else {
+            if (!ctx.disk->disk_write(dir_inode.indirect, zero)) return false;
+        }
     }
 
     uint32_t indirect_block[NINDIRECT];
-    if (!ctx.disk.disk_read(dir_inode.indirect, (char*)indirect_block)) return false;
-
+    //if (!ctx.disk.disk_read(dir_inode.indirect, (char*)indirect_block)) return false;
+    if (ctx.use_cache) {
+        auto& data = ctx.cache_controller->getBlock(dir_inode.indirect);
+        std::memcpy((char*)indirect_block, data.data(), BLOCK_SIZE);
+    } else {
+        if (!ctx.disk->disk_read(dir_inode.indirect, (char*)indirect_block)) return false;
+    }
     for (int k = 0; k < NINDIRECT; ++k) {
         if (indirect_block[k] == 0) {
             indirect_block[k] = block_alloc(ctx);
             char zero[BLOCK_SIZE] = {0};
-            if (!ctx.disk.disk_write(indirect_block[k], zero)) return false;
-            if (!ctx.disk.disk_write(dir_inode.indirect, (char*)indirect_block)) return false;
+            //if (!ctx.disk.disk_write(indirect_block[k], zero)) return false;
+            //if (!ctx.disk.disk_write(dir_inode.indirect, (char*)indirect_block)) return false;
+        
+            if (ctx.use_cache) {
+                ctx.cache_controller->writeBlock(indirect_block[k], zero)) return false;
+                ctx.cache_controller->writeBlock(dir_inode.indirect, (char*)indirect_block);
+            } else {
+                if (!ctx.disk.disk_write(indirect_block[k], zero)) return false;
+                if (!ctx.disk.disk_write(dir_inode.indirect, (char*)indirect_block)) return false;
+            }
         }
 
-        if (!ctx.disk.disk_read(indirect_block[k], block)) return false;
+        //if (!ctx.disk.disk_read(indirect_block[k], block)) return false;
+        if (ctx.use_cache) {
+            auto& data = ctx.cache_controller->getBlock(indirect_block[k]);
+            std::memcpy(block, data.data(), BLOCK_SIZE);
+        } else {
+            if (!ctx.disk->disk_read(indirect_block[k], block)) return false;
+        }
         DirEntry* entries = (DirEntry*) block;
         int num_entries = BLOCK_SIZE / sizeof(DirEntry);
 
@@ -118,7 +163,11 @@ int dir_add(FSContext &ctx, int dir_inum, const std::string &name, int inum) {
                 entries[j].inum = inum;
                 std::strncpy(entries[j].name, name.c_str(), sizeof(entries[j].name) - 1);
                 entries[j].name[sizeof(entries[j].name) - 1] = '\0';
-                return ctx.disk.disk_write(indirect_block[k], block);
+                if (ctx.use_cache) {
+                    ctx.cache_controller->writeBlock(indirect_block[k], block);    
+                    return true;
+                }
+                return ctx.disk->disk_write(indirect_block[k], block);
             }
         }
     }
@@ -134,8 +183,13 @@ int dir_list(FSContext &ctx, int dir_inum, std::vector<std::string> &out) {
     // Search in direct blocks
     for (int i = 0; i < NDIRECT; ++i) {
         if (dir_inode.direct[i] == 0) continue;
-        if (!ctx.disk.disk_read(dir_inode.direct[i], block)) return false;
-
+        //if (!ctx.disk.disk_read(dir_inode.direct[i], block)) return false;
+        if (ctx.use_cache) {
+            auto& data = ctx.cache_controller.getBlock(dir_inode.direct[i]);
+            std::memcpy(block, data.data(), BLOCK_SIZE);
+        } else {
+            if (!ctx.disk->disk_read(dir_inode.direct[i], block)) return false;
+        }
         DirEntry* entries = (DirEntry*) block;
         int num_entries = BLOCK_SIZE / sizeof(DirEntry);
 
@@ -151,12 +205,22 @@ int dir_list(FSContext &ctx, int dir_inum, std::vector<std::string> &out) {
     // Search in indirect blocks
     if (dir_inode.indirect != 0) {
         uint32_t indirect_block[NINDIRECT];
-        if (!ctx.disk.disk_read(dir_inode.indirect, (char*)indirect_block)) return false;
-
+        //if (!ctx.disk.disk_read(dir_inode.indirect, (char*)indirect_block)) return false;
+        if (ctx.use_cache) {
+            auto& data = ctx.cache_controller->getBlock(dir_inode.indirect);
+            std::memcpy((char*)indirect_block, data.data(), BLOCK_SIZE);
+        } else {
+            if (!ctx.disk->disk_read(dir_inode.indirect, (char*)indirect_block)) return false;
+        }
         for (int k = 0; k < NINDIRECT; ++k) {
             if (indirect_block[k] == 0) continue;
-            if (!ctx.disk.disk_read(indirect_block[k], block)) return false;
-
+            //if (!ctx.disk.disk_read(indirect_block[k], block)) return false;
+            if (ctx.use_cache) {
+                auto& data = ctx.cache_controller->getBlock(indirect_block[k]);
+                std::memcpy(block, data.data(), BLOCK_SIZE);
+            } else {
+                if (!ctx.disk->disk_read(indirect_block[k], block)) return false;
+            }
             DirEntry* entries = (DirEntry*) block;
             int num_entries = BLOCK_SIZE / sizeof(DirEntry);
 
@@ -180,8 +244,13 @@ int dir_remove(FSContext &ctx, int dir_inum, const std::string &name) {
     char block[BLOCK_SIZE];
     for (int i = 0;i < NDIRECT; ++i) {
         if (dir_inode.direct[i] == 0) continue;
-        if (!ctx.disk.disk_read(dir_inode.direct[i], block)) return -1;
-        
+        //if (!ctx.disk.disk_read(dir_inode.direct[i], block)) return -1;
+        if (ctx.use_cache) {
+            auto& data = ctx.cache_controller->getBlock(dir_inode.direct[i]);
+            std::memcpy(block, data.data(), BLOCK_SIZE);
+        } else {
+            if (!ctx.disk->disk_read(dir_inode.direct[i], block)) return -1;
+        }
         DirEntry* entries = (DirEntry*) block;
         int num_entries = BLOCK_SIZE / sizeof(DirEntry);
 
@@ -189,7 +258,11 @@ int dir_remove(FSContext &ctx, int dir_inum, const std::string &name) {
             if (entries[j].inum != 0 && name == entries[j].name) {
                 entries[j].inum = 0;
                 std::memset(entries[j].name, 0, sizeof(entries[j].name));
-                return ctx.disk.disk_write(dir_inode.direct[i], block);
+                if (ctx.use_cache) {
+                    ctx.cache_controller->writeBlock(dir_inode.direct[i], block);
+                    return true;
+                }
+                return ctx.disk->disk_write(dir_inode.direct[i], block);
             }
         }
     }
@@ -197,12 +270,22 @@ int dir_remove(FSContext &ctx, int dir_inum, const std::string &name) {
     // Traverse indirect block if theres any
     if (dir_inode.indirect != 0) {
         uint32_t indirect_block[NINDIRECT];
-        if (!ctx.disk.disk_read(dir_inode.indirect, (char*)indirect_block)) return false;
-
+        //if (!ctx.disk.disk_read(dir_inode.indirect, (char*)indirect_block)) return false;
+        if (ctx.use_cache) {
+           auto& data =  ctx.cache_controller->getBlock(dir_inode.indirect);
+            std::memcpy((char*)indirect_block), data.data(), BLOCK_SIZE);
+        } else {
+            if (!ctx.disk->disk_read(dir_inode.indirect, (char*)indirect_block)) return false;
+        }
         for (int k = 0;k < NINDIRECT; ++k) {
             if (indirect_block[k] == 0) continue;
-            if (!ctx.disk.disk_read(indirect_block[k], block)) return false;
-
+            //if (!ctx.disk.disk_read(indirect_block[k], block)) return false;
+            if (ctx.use_cache) {
+                auto& data = ctx.cache_controller->getBlock(indirect_block[k]);
+                std::memcpy(block, data.data(), BLOCK_SIZE);
+            } else {
+                if (!ctx.disk->disk_read(indirect_block[k], block)) return false;
+            }
             DirEntry* entries = (DirEntry*) block;
             int num_entries = BLOCK_SIZE / sizeof(DirEntry);
 
@@ -210,7 +293,11 @@ int dir_remove(FSContext &ctx, int dir_inum, const std::string &name) {
                 if (entries[j].inum != 0 && name == entries[j].name) {
                     entries[j].inum = 0;
                     std::memset(entries[j].name, 0, sizeof(entries[j].name));
-                    return ctx.disk.disk_write(indirect_block[k], block);
+                    if (ctx.use_cache) {
+                        ctx.cache_controller->writeBlock(indirect_block[k], block);
+                        return true;
+                    }
+                    return ctx.disk->disk_write(indirect_block[k], block);
                 }
             }
         }

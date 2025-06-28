@@ -50,7 +50,7 @@ public:
         std::lock_guard<std::mutex> lk(mu_);
         
         int id = next_mount_id_++;
-        auto ctx = std::make_unique<FSContext>();
+        auto ctx = std::make_unique<FSContext>(id);
     
         if (!sfs_init(*ctx, req->disk_image())) {
             res->set_error("Failed to initialize FS on " + req->disk_image());
