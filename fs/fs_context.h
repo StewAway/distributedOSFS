@@ -2,7 +2,9 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <memory>
 #include "disk.h"
+#include "block_cache_controller.h"
 
 struct OpenFile {
     int inum;

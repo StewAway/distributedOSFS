@@ -58,7 +58,7 @@ public:
         }
         
         ctx->use_cache = req->enable_cache();
-        if (ctx.use_cache) {
+        if (ctx->use_cache) {
             const size_t block_size = BLOCK_SIZE;
             const size_t cache_blocks = CACHE_NUM_BLOCKS;
             ctx->init_cache(cache_blocks, block_size);

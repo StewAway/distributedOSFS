@@ -3,31 +3,22 @@ CXXFLAGS = -std=c++17 -lstdc++fs `pkg-config --cflags grpc++ grpc protobuf`
 LDFLAGS = `pkg-config --libs grpc++ grpc protobuf`
 PROTO_SRCS = filesystem.pb.cc filesystem.grpc.pb.cc
 
-all: fs_server test1_fs_client test2_fs_client
+SRCS = inode.cpp dir.cpp disk.cpp block_manager.cpp sfs.cpp block_cache_controller.cpp
+OBJS = $(SRCS:.cpp=.o)
 
-fs_server: fs_server.cpp inode.o dir.o disk.o block_manager.o sfs.o $(PROTO_SRCS)
-	$(CXX) $(CXXFLAGS) -o $@ fs_server.cpp inode.o dir.o disk.o block_manager.o sfs.o $(PROTO_SRCS) $(LDFLAGS)
+all: fs_server test_correctness_fs_client test_benchmark_fs_client
 
-test1_fs_client: test1_fs_client.cpp $(PROTO_SRCS)
-	$(CXX) $(CXXFLAGS) -o $@ test1_fs_client.cpp $(PROTO_SRCS) $(LDFLAGS)
+fs_server: fs_server.cpp $(OBJS) $(PROTO_SRCS)
+	$(CXX) $(CXXFLAGS) -o $@ fs_server.cpp $(OBJS) $(PROTO_SRCS) $(LDFLAGS)
 
-test2_fs_client: test2_fs_client.cpp $(PROTO_SRCS)
-	$(CXX) $(CXXFLAGS) -o $@ test2_fs_client.cpp $(PROTO_SRCS) $(LDFLAGS)
+test_correctness_fs_client: test_correctness_fs_client.cpp $(PROTO_SRCS)
+	$(CXX) $(CXXFLAGS) -o $@ test_correctness_fs_client.cpp $(PROTO_SRCS) $(LDFLAGS)
 
-inode.o: inode.cpp inode.h
-	$(CXX) $(CXXFLAGS) -c inode.cpp
+test_benchmark_fs_client: test_benchmark_fs_client.cpp $(PROTO_SRCS)
+	$(CXX) $(CXXFLAGS) -o $@ test_benchmark_fs_client.cpp $(PROTO_SRCS) $(LDFLAGS)
 
-dir.o: dir.cpp dir.h
-	$(CXX) $(CXXFLAGS) -c dir.cpp
-
-disk.o: disk.cpp disk.h
-	$(CXX) $(CXXFLAGS) -c disk.cpp
-
-block_manager.o: block_manager.cpp block_manager.h
-	$(CXX) $(CXXFLAGS) -c block_manager.cpp
-
-sfs.o: sfs.cpp sfs.h
-	$(CXX) $(CXXFLAGS) -c sfs.cpp
+%.o: %.cpp %.h
+	$(CXX) $(CXXFLAGS) -c $<
 
 clean:
-	rm -f fs_server test_fs_client *.o *.img
+	rm -f fs_server test_*_fs_client *.o *.img

@@ -6,7 +6,7 @@
 #include <utility>
 #include <unordered_map>
 #include <optional>
-#include "LRUCache.h"
+#include "lru_cache.h"
 
 class Disk; // foward declare for disk I/O
 
@@ -37,4 +37,4 @@ private:
 
     void evictIfNeeded();
     void flushEntry(const BlockKey& key, const BlockEntry& entry);
-}
+};

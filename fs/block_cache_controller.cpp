@@ -1,5 +1,7 @@
 #include "block_cache_controller.h"
 #include "disk.h" // disk I/O class
+#include <memory>
+#include <cstring>
 
 BlockCacheController::BlockCacheController(
     size_t capacity_blocks,
@@ -10,7 +12,7 @@ BlockCacheController::BlockCacheController(
     disk_(disk),
     cache_(capacity_blocks) {}
 
-const std::vector<char>& BlockCacheController:getBlock(uint64_t block_num) {
+const std::vector<char>& BlockCacheController::getBlock(uint64_t block_num) {
     BlockKey key = block_num;
     if (cache_.contains(key)) {
         return cache_.get(key).data;
@@ -27,7 +29,7 @@ const std::vector<char>& BlockCacheController:getBlock(uint64_t block_num) {
     return cache_.get(key).data;
 }
 
-void BlockCacheController::writeBLock(uint64_t mount_id, uint64_t block_num, const char* buf) {
+void BlockCacheController::writeBlock(uint64_t block_num, const char* buf) {
     BlockKey key = block_num;
     if (!cache_.contains(key)) {
         std::vector<char> tmp(block_size_);

@@ -44,7 +44,7 @@ static int get_data_block_index(FSContext &ctx, Inode &ino, int file_block_index
         uint32_t indirect_block[NINDIRECT];
         //if (!ctx.disk.disk_read(ino.indirect, (char*)indirect_block)) return -1;
         if (ctx.use_cache) {
-            auto& data = ctx.cache_controller->getBlock(ctx.mount_id, ino.indirect);
+            auto& data = ctx.cache_controller->getBlock(ino.indirect);
             std::memcpy((char*)indirect_block, data.data(), BLOCK_SIZE);
         } else {
             if (!ctx.disk->disk_read(ino.indirect, (char*)indirect_block)) return -1; 
@@ -55,8 +55,7 @@ static int get_data_block_index(FSContext &ctx, Inode &ino, int file_block_index
             indirect_block[idx] = block_alloc(ctx);
             // if (!ctx.disk.disk_write(ino.indirect, (char*)indirect_block)) return -1;
             if (ctx.use_cache) {
-                auto& data = ctx.cache_controller->writeBlock(ctx.mount_id, ino.indirect);
-                std::memcpy((char*)indirect_block, data.data(), BLOCK_SIZE);
+                ctx.cache_controller->writeBlock(ino.indirect, (char*)indirect_block);
             } else {
                 if (!ctx.disk->disk_write(ino.indirect, (char*)indirect_block)) return -1;
             }
@@ -117,7 +116,7 @@ int sfs_mkdir(FSContext &ctx, const std::string &path) {
     char blockBuf[4096] = {0};
     //ctx.disk.disk_write(bno, blockBuf);
     if (ctx.use_cache) {
-        ctx.cache_controller->writeBlock(ctx.mount_id, bno, blockBuf);
+        ctx.cache_controller->writeBlock(bno, blockBuf);
     } else {
         ctx.disk->disk_write(bno, blockBuf);
     }
@@ -153,7 +152,7 @@ int sfs_read(FSContext &ctx, int fd, char* buf, int size) {
         char blockBuf[BLOCK_SIZE];
         //if (!ctx.disk.disk_read(block_no, blockBuf)) return -1;
         if (ctx.use_cache) {
-            auto& data = ctx.cache_controller->getBlock(ctx.mount_id, block_no);
+            auto& data = ctx.cache_controller->getBlock(block_no);
             std::memcpy(blockBuf, data.data(), BLOCK_SIZE);
         } else {
             if (!ctx.disk->disk_read(block_no, blockBuf)) return -1;
@@ -185,8 +184,8 @@ int sfs_write(FSContext &ctx, int fd, const char* buf, int size) {
         char blockBuf[BLOCK_SIZE];
         //if (!ctx.disk.disk_read(block_no, blockBuf)) return -1;
         if (ctx.use_cache) {
-            auto& data = ctx.cache_controller->getBlock(ctx.mount_id, block_num);
-            std::memcpy(buf, data.data(), BLOCK_SIZE);
+            auto& data = ctx.cache_controller->getBlock(block_no);
+            std::memcpy(blockBuf, data.data(), BLOCK_SIZE);
         } else {
             if (!ctx.disk->disk_read(block_no, blockBuf)) return -1;
         }
@@ -195,7 +194,7 @@ int sfs_write(FSContext &ctx, int fd, const char* buf, int size) {
         std::memcpy(blockBuf + inner_offset, buf + total, chunk);
         //ctx.disk.disk_write(block_no, blockBuf);
         if (ctx.use_cache) {
-            ctx.cache_controller->writeBlock(ctx.mount_id, block_no, blockBuf);
+            ctx.cache_controller->writeBlock(block_no, blockBuf);
         } else {
             ctx.disk->disk_write(block_no, blockBuf);
         }
@@ -253,7 +252,7 @@ bool sfs_remove(FSContext &ctx, const std::string &path) {
         uint32_t indirect_block[NINDIRECT];
         //ctx.disk.disk_read(ino.indirect, (char*)indirect_block);
         if (ctx.use_cache) {
-            auto& data = ctx.cache_controller->getBlock(ctx.mount_id, ino.indirect);
+            auto& data = ctx.cache_controller->getBlock(ino.indirect);
             std::memcpy((char*)indirect_block, data.data(), BLOCK_SIZE);
         } else {
             ctx.disk->disk_read(ino.indirect, (char*)indirect_block);

@@ -4,7 +4,7 @@
 #include "block_cache_controller.h"
 #include <vector>
 #include <cstring>
-
+#include <memory>
 
 const int INODES_PER_BLOCK = BLOCK_SIZE / sizeof(Inode);
 
