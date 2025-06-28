@@ -8,6 +8,7 @@
 #include "dir.h"
 #include "block_manager.h"
 #include "disk.h"
+#include "block_cache_controller.h"
 
 static int lookup_path(FSContext &ctx, const std::string &path) {
     std::stringstream ss(path);
@@ -31,17 +32,34 @@ static int get_data_block_index(FSContext &ctx, Inode &ino, int file_block_index
         if (ino.indirect == 0 && allocate) {
             ino.indirect = block_alloc(ctx);
             char zero[BLOCK_SIZE] = {0};
-            if (!ctx.disk.disk_write(ino.indirect, zero)) return -1;
+            //if (!ctx.disk.disk_write(ino.indirect, zero)) return -1;
+            if (ctx.use_cache) {
+                ctx.cache_controller->writeBlock(ino.indirect, zero);
+            } else {
+                if (!ctx.disk.disk_write(ino.indirect, zero)) return -1;
+            }
         }
         if (ino.indirect == 0) return 0;
 
         uint32_t indirect_block[NINDIRECT];
-        if (!ctx.disk.disk_read(ino.indirect, (char*)indirect_block)) return -1;
+        //if (!ctx.disk.disk_read(ino.indirect, (char*)indirect_block)) return -1;
+        if (ctx.use_cache) {
+            auto& data = ctx.cache_controller->getBlock(ctx.mount_id, ino.indirect);
+            std::memcpy((char*)indirect_block, data.data(), BLOCK_SIZE);
+        } else {
+            if (!ctx.disk.disk_read(ino.indirect, (char*)indirect_block)) return -1; 
+        }
 
         int idx = file_block_index - NDIRECT;
         if (allocate && indirect_block[idx] == 0) {
             indirect_block[idx] = block_alloc(ctx);
-            if (!ctx.disk.disk_write(ino.indirect, (char*)indirect_block)) return -1;
+            // if (!ctx.disk.disk_write(ino.indirect, (char*)indirect_block)) return -1;
+            if (ctx.use_cache) {
+                auto& data = ctx.cache_controller->writeBlock(ctx.mount_id, ino.indirect);
+                std::memcpy((char*)indirect_block, data.data(), BLOCK_SIZE);
+            } else {
+                if (!ctx.disk.disk_write(ino.indirect, (char*)indirect_block)) return -1;
+            }
         }
         return indirect_block[idx];
     }
@@ -97,7 +115,12 @@ int sfs_mkdir(FSContext &ctx, const std::string &path) {
     ino.direct[0] = bno;
     inode_write(ctx, inum, ino);
     char blockBuf[4096] = {0};
-    ctx.disk.disk_write(bno, blockBuf);
+    //ctx.disk.disk_write(bno, blockBuf);
+    if (ctx.use_cache) {
+        ctx.cache_controller->writeBlock(ctx.mount_id, bno, blockBuf);
+    } else {
+        ctx.disk.disk_write(bno, blockBuf);
+    }
     dir_add(ctx, parent, name, inum);
     return inum;
 }
@@ -128,7 +151,13 @@ int sfs_read(FSContext &ctx, int fd, char* buf, int size) {
         if (block_no == 0) break;
 
         char blockBuf[BLOCK_SIZE];
-        if (!ctx.disk.disk_read(block_no, blockBuf)) return -1;
+        //if (!ctx.disk.disk_read(block_no, blockBuf)) return -1;
+        if (ctx.use_cache) {
+            auto& data = ctx.cache_controller->getBlock(ctx.mount_id, block_no);
+            std::memcpy(blockBuf, data.data(), BLOCK_SIZE);
+        } else {
+            if (!ctx.disk.disk_read(block_no, blockBuf)) return -1;
+        }
 
         int chunk = std::min(size - total, BLOCK_SIZE - inner_offset);
         chunk = std::min(chunk, (int)ino.size - of.offset);
@@ -154,12 +183,22 @@ int sfs_write(FSContext &ctx, int fd, const char* buf, int size) {
         if (block_no == 0) return -1;
 
         char blockBuf[BLOCK_SIZE];
-        if (!ctx.disk.disk_read(block_no, blockBuf)) return -1;
+        //if (!ctx.disk.disk_read(block_no, blockBuf)) return -1;
+        if (ctx.use_cache) {
+            auto& data = ctx.cache_controller->getBlock(ctx.mount_id, block_num);
+            std::memcpy(buf, data.data(), BLOCK_SIZE);
+        } else {
+            if (!ctx.disk.disk_read(block_no, blockBuf)) return -1;
+        }
 
         int chunk = std::min(size - total, BLOCK_SIZE - inner_offset);
         std::memcpy(blockBuf + inner_offset, buf + total, chunk);
-        ctx.disk.disk_write(block_no, blockBuf);
-
+        //ctx.disk.disk_write(block_no, blockBuf);
+        if (ctx.use_cache) {
+            ctx.cache_controller->writeBlock(ctx.mount_id, block_no, blockBuf);
+        } else {
+            ctx.disk.disk_write(block_no, blockBuf);
+        }
         of.offset += chunk;
         total += chunk;
     }
@@ -212,7 +251,13 @@ bool sfs_remove(FSContext &ctx, const std::string &path) {
             block_free(ctx, ino.direct[i]); // deallocating/free data blocks
     if (ino.indirect) {
         uint32_t indirect_block[NINDIRECT];
-        ctx.disk.disk_read(ino.indirect, (char*)indirect_block);
+        //ctx.disk.disk_read(ino.indirect, (char*)indirect_block);
+        if (ctx.use_cache) {
+            auto& data = ctx.cache_controller->getBlock(ctx.mount_id, ino.indirect);
+            std::memcpy((char*)indirect_block, data.data(), BLOCK_SIZE);
+        } else {
+            ctx.disk.disk_read(ino.indirect, (char*)indirect_block);
+        }
         for (int i = 0;i < NINDIRECT; ++i) {
             if (indirect_block[i] == 0) continue;
             block_free(ctx, indirect_block[i]);
