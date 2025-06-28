@@ -56,7 +56,6 @@ public:
             res->set_error("Failed to initialize FS on " + req->disk_image());
             return Status::OK;
         }
-        
         ctx->use_cache = req->enable_cache();
         if (ctx->use_cache) {
             const size_t block_size = BLOCK_SIZE;
@@ -107,6 +106,8 @@ public:
 
     Status Write(ServerContext*, const WriteRequestMulti* req, WriteResponse* res) override {
         auto ctx = get_ctx(req->mount_id());
+        if (!res) return Status(grpc::StatusCode::INTERNAL, "WriteReponse* is null");
+
         if (!ctx) {
             res->set_error("Invalid mount_id");
             return Status::OK;

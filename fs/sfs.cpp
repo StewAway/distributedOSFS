@@ -65,9 +65,16 @@ static int get_data_block_index(FSContext &ctx, Inode &ino, int file_block_index
 }
 
 bool sfs_init(FSContext &ctx, const std::string &disk_image) {
+    
+    ctx.disk = std::make_shared<Disk>();
     if (!ctx.disk->disk_init(disk_image)) {
         std::cerr<<"Failed to initialize disk.\n";
         return false;
+    }
+    if (ctx.use_cache) {
+        size_t block_size = BLOCK_SIZE;
+        size_t cache_blocks = CACHE_NUM_BLOCKS;
+        ctx.init_cache(cache_blocks, block_size);
     }
     block_manager_init(ctx);
     inode_init(ctx);

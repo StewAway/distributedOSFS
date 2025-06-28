@@ -79,8 +79,14 @@ void run_benchmark(bool use_cache, const std::string& disk_image) {
   auto start = std::chrono::high_resolution_clock::now();
 
   for (int i = 0; i < ops; ++i) {
-    if (i % 2 == 0) client.Write(mid, fd, data);
-    else client.Read(mid, fd, 4096);
+    if (i % 2 == 0) {
+        client.Write(mid, fd, data);
+        //std::cout<<use_cache<<" "<<"write "<<i<<"\n";
+    }
+    else {
+        client.Read(mid, fd, 4096);
+        //std::cout<<use_cache<<" "<<"read "<<i<<"\n";
+    }
   }
 
   auto end = std::chrono::high_resolution_clock::now();

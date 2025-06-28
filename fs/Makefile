@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -lstdc++fs `pkg-config --cflags grpc++ grpc protobuf`
+CXXFLAGS = -g -std=c++17 -lstdc++fs `pkg-config --cflags grpc++ grpc protobuf`
 LDFLAGS = `pkg-config --libs grpc++ grpc protobuf`
 PROTO_SRCS = filesystem.pb.cc filesystem.grpc.pb.cc
 
@@ -22,3 +22,6 @@ test_benchmark_fs_client: test_benchmark_fs_client.cpp $(PROTO_SRCS)
 
 clean:
 	rm -f fs_server test_*_fs_client *.o *.img
+
+clean-images:
+	rm -f images/*.img

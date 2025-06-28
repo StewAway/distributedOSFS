@@ -19,11 +19,9 @@ bool Disk::disk_init(const std::string& path) {
             return false;
         }
     }
-
     // 2) Build the full path: images/<name>
     fs::path full = img_dir / path;
     auto full_str = full.string();
-
     // 3) Try open existing image
     file_.open(full_str, std::ios::in | std::ios::out | std::ios::binary);
     if (!file_.is_open()) {
