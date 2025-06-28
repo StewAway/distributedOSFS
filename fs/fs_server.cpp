@@ -59,7 +59,7 @@ public:
         ctx->use_cache = req->enable_cache();
         if (ctx->use_cache) {
             const size_t block_size = BLOCK_SIZE;
-            const size_t cache_blocks = CACHE_NUM_BLOCKS;
+            const size_t cache_blocks = req->cache_blocks();
             ctx->init_cache(cache_blocks, block_size);
         } 
         contexts_[id] = std::move(ctx);
@@ -68,6 +68,7 @@ public:
     }
 
     Status Create(ServerContext*, const FileRequest* req, CreateResponse* res) override {
+        std::lock_guard<std::mutex> lk(mu_);
         auto ctx = get_ctx(req->mount_id());
         if (!ctx) {
             res->set_error("Invalid mount_id"); 
@@ -81,6 +82,7 @@ public:
     }
 
     Status Mkdir(ServerContext*, const FileRequest* req, MkdirResponse* res) override {
+        std::lock_guard<std::mutex> lk(mu_);
         auto ctx = get_ctx(req->mount_id());
         if (!ctx) {
             res->set_error("Invalid mount_id");
@@ -93,6 +95,7 @@ public:
     }
 
     Status Open(ServerContext*, const FileRequest* req, OpenResponse* res) override {
+        std::lock_guard<std::mutex> lk(mu_);
         auto ctx = get_ctx(req->mount_id());
         if (!ctx) {
             res->set_error("Invalid mount_id");
@@ -105,6 +108,7 @@ public:
     }
 
     Status Write(ServerContext*, const WriteRequestMulti* req, WriteResponse* res) override {
+        std::lock_guard<std::mutex> lk(mu_);
         auto ctx = get_ctx(req->mount_id());
         if (!res) return Status(grpc::StatusCode::INTERNAL, "WriteReponse* is null");
 
@@ -119,6 +123,7 @@ public:
     }
 
     Status Read(ServerContext*, const ReadRequestMulti* req, ReadResponse* res) override {
+        std::lock_guard<std::mutex> lk(mu_);
         auto ctx = get_ctx(req->mount_id());
         if (!ctx) {
             res->set_error("Invalid mount_id");
@@ -135,6 +140,7 @@ public:
     }
 
     Status Seek(ServerContext*, const SeekRequestMulti* req, SeekResponse* res) override {
+        std::lock_guard<std::mutex> lk(mu_);
         auto ctx = get_ctx(req->mount_id());
         if (!ctx) {
             res->set_error("Invalid mount_id");
@@ -161,6 +167,7 @@ public:
     }
 
     Status Remove(ServerContext*, const FileRequest* req, RemoveResponse* res) override {
+        std::lock_guard<std::mutex> lk(mu_);
         auto ctx = get_ctx(req->mount_id());
         if (!ctx) {
             res->set_error("Invalid mount_id");

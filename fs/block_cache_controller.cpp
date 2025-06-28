@@ -2,6 +2,7 @@
 #include "disk.h" // disk I/O class
 #include <memory>
 #include <cstring>
+#include <mutex>
 
 BlockCacheController::BlockCacheController(
     size_t capacity_blocks,
@@ -13,6 +14,7 @@ BlockCacheController::BlockCacheController(
     cache_(capacity_blocks) {}
 
 const std::vector<char>& BlockCacheController::getBlock(uint64_t block_num) {
+    std::lock_guard<std::mutex> lock(mutex_);
     BlockKey key = block_num;
     if (cache_.contains(key)) {
         return cache_.get(key).data;
@@ -30,6 +32,7 @@ const std::vector<char>& BlockCacheController::getBlock(uint64_t block_num) {
 }
 
 void BlockCacheController::writeBlock(uint64_t block_num, const char* buf) {
+    std::lock_guard<std::mutex> lock(mutex_);
     BlockKey key = block_num;
     if (!cache_.contains(key)) {
         std::vector<char> tmp(block_size_);

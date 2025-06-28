@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <optional>
 #include "lru_cache.h"
+#include <mutex>
 
 class Disk; // foward declare for disk I/O
 
@@ -31,7 +32,7 @@ private:
     size_t capacity_blocks_;
     size_t block_size_;
     std::shared_ptr<Disk> disk_;
-
+    std::mutex mutex_;
     // switch to LFU if needed
     LRUCache<BlockKey, BlockEntry> cache_;
 

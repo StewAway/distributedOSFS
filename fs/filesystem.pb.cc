@@ -25,6 +25,7 @@ PROTOBUF_CONSTEXPR MountRequest::MountRequest(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.disk_image_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.enable_cache_)*/false
+  , /*decltype(_impl_.cache_blocks_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct MountRequestDefaultTypeInternal {
   PROTOBUF_CONSTEXPR MountRequestDefaultTypeInternal()
@@ -235,6 +236,7 @@ const uint32_t TableStruct_filesystem_2eproto::offsets[] PROTOBUF_SECTION_VARIAB
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::fs::MountRequest, _impl_.disk_image_),
   PROTOBUF_FIELD_OFFSET(::fs::MountRequest, _impl_.enable_cache_),
+  PROTOBUF_FIELD_OFFSET(::fs::MountRequest, _impl_.cache_blocks_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::fs::MountResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -346,19 +348,19 @@ const uint32_t TableStruct_filesystem_2eproto::offsets[] PROTOBUF_SECTION_VARIAB
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::fs::MountRequest)},
-  { 8, -1, -1, sizeof(::fs::MountResponse)},
-  { 16, -1, -1, sizeof(::fs::FileRequest)},
-  { 24, -1, -1, sizeof(::fs::CreateResponse)},
-  { 32, -1, -1, sizeof(::fs::MkdirResponse)},
-  { 40, -1, -1, sizeof(::fs::OpenResponse)},
-  { 48, -1, -1, sizeof(::fs::ReadRequestMulti)},
-  { 57, -1, -1, sizeof(::fs::ReadResponse)},
-  { 65, -1, -1, sizeof(::fs::WriteRequestMulti)},
-  { 74, -1, -1, sizeof(::fs::WriteResponse)},
-  { 82, -1, -1, sizeof(::fs::SeekRequestMulti)},
-  { 92, -1, -1, sizeof(::fs::SeekResponse)},
-  { 100, -1, -1, sizeof(::fs::ListdirResponse)},
-  { 108, -1, -1, sizeof(::fs::RemoveResponse)},
+  { 9, -1, -1, sizeof(::fs::MountResponse)},
+  { 17, -1, -1, sizeof(::fs::FileRequest)},
+  { 25, -1, -1, sizeof(::fs::CreateResponse)},
+  { 33, -1, -1, sizeof(::fs::MkdirResponse)},
+  { 41, -1, -1, sizeof(::fs::OpenResponse)},
+  { 49, -1, -1, sizeof(::fs::ReadRequestMulti)},
+  { 58, -1, -1, sizeof(::fs::ReadResponse)},
+  { 66, -1, -1, sizeof(::fs::WriteRequestMulti)},
+  { 75, -1, -1, sizeof(::fs::WriteResponse)},
+  { 83, -1, -1, sizeof(::fs::SeekRequestMulti)},
+  { 93, -1, -1, sizeof(::fs::SeekResponse)},
+  { 101, -1, -1, sizeof(::fs::ListdirResponse)},
+  { 109, -1, -1, sizeof(::fs::RemoveResponse)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -379,41 +381,42 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 
 const char descriptor_table_protodef_filesystem_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\020filesystem.proto\022\002fs\"8\n\014MountRequest\022\022"
+  "\n\020filesystem.proto\022\002fs\"N\n\014MountRequest\022\022"
   "\n\ndisk_image\030\001 \001(\t\022\024\n\014enable_cache\030\002 \001(\010"
-  "\"0\n\rMountResponse\022\020\n\010mount_id\030\001 \001(\005\022\r\n\005e"
-  "rror\030\002 \001(\t\"-\n\013FileRequest\022\020\n\010mount_id\030\001 "
-  "\001(\005\022\014\n\004path\030\002 \001(\t\"-\n\016CreateResponse\022\014\n\004i"
-  "num\030\001 \001(\005\022\r\n\005error\030\002 \001(\t\",\n\rMkdirRespons"
-  "e\022\014\n\004inum\030\001 \001(\005\022\r\n\005error\030\002 \001(\t\")\n\014OpenRe"
-  "sponse\022\n\n\002fd\030\001 \001(\005\022\r\n\005error\030\002 \001(\t\"C\n\020Rea"
-  "dRequestMulti\022\020\n\010mount_id\030\001 \001(\005\022\n\n\002fd\030\002 "
-  "\001(\005\022\021\n\tnum_bytes\030\003 \001(\005\"+\n\014ReadResponse\022\014"
-  "\n\004data\030\001 \001(\014\022\r\n\005error\030\002 \001(\t\"\?\n\021WriteRequ"
-  "estMulti\022\020\n\010mount_id\030\001 \001(\005\022\n\n\002fd\030\002 \001(\005\022\014"
-  "\n\004data\030\003 \001(\014\"/\n\rWriteResponse\022\017\n\007success"
-  "\030\001 \001(\010\022\r\n\005error\030\002 \001(\t\"P\n\020SeekRequestMult"
-  "i\022\020\n\010mount_id\030\001 \001(\005\022\n\n\002fd\030\002 \001(\005\022\016\n\006offse"
-  "t\030\003 \001(\005\022\016\n\006whence\030\004 \001(\005\".\n\014SeekResponse\022"
-  "\017\n\007success\030\001 \001(\010\022\r\n\005error\030\002 \001(\t\"1\n\017Listd"
-  "irResponse\022\017\n\007entries\030\001 \003(\t\022\r\n\005error\030\002 \001"
-  "(\t\"0\n\016RemoveResponse\022\017\n\007success\030\001 \001(\010\022\r\n"
-  "\005error\030\002 \001(\t2\264\003\n\nFileSystem\022,\n\005Mount\022\020.f"
-  "s.MountRequest\032\021.fs.MountResponse\022-\n\006Cre"
-  "ate\022\017.fs.FileRequest\032\022.fs.CreateResponse"
-  "\022+\n\005Mkdir\022\017.fs.FileRequest\032\021.fs.MkdirRes"
-  "ponse\022)\n\004Open\022\017.fs.FileRequest\032\020.fs.Open"
-  "Response\022.\n\004Read\022\024.fs.ReadRequestMulti\032\020"
-  ".fs.ReadResponse\0221\n\005Write\022\025.fs.WriteRequ"
-  "estMulti\032\021.fs.WriteResponse\022.\n\004Seek\022\024.fs"
-  ".SeekRequestMulti\032\020.fs.SeekResponse\022/\n\007L"
-  "istdir\022\017.fs.FileRequest\032\023.fs.ListdirResp"
-  "onse\022-\n\006Remove\022\017.fs.FileRequest\032\022.fs.Rem"
-  "oveResponseb\006proto3"
+  "\022\024\n\014cache_blocks\030\003 \001(\005\"0\n\rMountResponse\022"
+  "\020\n\010mount_id\030\001 \001(\005\022\r\n\005error\030\002 \001(\t\"-\n\013File"
+  "Request\022\020\n\010mount_id\030\001 \001(\005\022\014\n\004path\030\002 \001(\t\""
+  "-\n\016CreateResponse\022\014\n\004inum\030\001 \001(\005\022\r\n\005error"
+  "\030\002 \001(\t\",\n\rMkdirResponse\022\014\n\004inum\030\001 \001(\005\022\r\n"
+  "\005error\030\002 \001(\t\")\n\014OpenResponse\022\n\n\002fd\030\001 \001(\005"
+  "\022\r\n\005error\030\002 \001(\t\"C\n\020ReadRequestMulti\022\020\n\010m"
+  "ount_id\030\001 \001(\005\022\n\n\002fd\030\002 \001(\005\022\021\n\tnum_bytes\030\003"
+  " \001(\005\"+\n\014ReadResponse\022\014\n\004data\030\001 \001(\014\022\r\n\005er"
+  "ror\030\002 \001(\t\"\?\n\021WriteRequestMulti\022\020\n\010mount_"
+  "id\030\001 \001(\005\022\n\n\002fd\030\002 \001(\005\022\014\n\004data\030\003 \001(\014\"/\n\rWr"
+  "iteResponse\022\017\n\007success\030\001 \001(\010\022\r\n\005error\030\002 "
+  "\001(\t\"P\n\020SeekRequestMulti\022\020\n\010mount_id\030\001 \001("
+  "\005\022\n\n\002fd\030\002 \001(\005\022\016\n\006offset\030\003 \001(\005\022\016\n\006whence\030"
+  "\004 \001(\005\".\n\014SeekResponse\022\017\n\007success\030\001 \001(\010\022\r"
+  "\n\005error\030\002 \001(\t\"1\n\017ListdirResponse\022\017\n\007entr"
+  "ies\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"0\n\016RemoveRespon"
+  "se\022\017\n\007success\030\001 \001(\010\022\r\n\005error\030\002 \001(\t2\264\003\n\nF"
+  "ileSystem\022,\n\005Mount\022\020.fs.MountRequest\032\021.f"
+  "s.MountResponse\022-\n\006Create\022\017.fs.FileReque"
+  "st\032\022.fs.CreateResponse\022+\n\005Mkdir\022\017.fs.Fil"
+  "eRequest\032\021.fs.MkdirResponse\022)\n\004Open\022\017.fs"
+  ".FileRequest\032\020.fs.OpenResponse\022.\n\004Read\022\024"
+  ".fs.ReadRequestMulti\032\020.fs.ReadResponse\0221"
+  "\n\005Write\022\025.fs.WriteRequestMulti\032\021.fs.Writ"
+  "eResponse\022.\n\004Seek\022\024.fs.SeekRequestMulti\032"
+  "\020.fs.SeekResponse\022/\n\007Listdir\022\017.fs.FileRe"
+  "quest\032\023.fs.ListdirResponse\022-\n\006Remove\022\017.f"
+  "s.FileRequest\032\022.fs.RemoveResponseb\006proto"
+  "3"
   ;
 static ::_pbi::once_flag descriptor_table_filesystem_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_filesystem_2eproto = {
-    false, false, 1219, descriptor_table_protodef_filesystem_2eproto,
+    false, false, 1241, descriptor_table_protodef_filesystem_2eproto,
     "filesystem.proto",
     &descriptor_table_filesystem_2eproto_once, nullptr, 0, 14,
     schemas, file_default_instances, TableStruct_filesystem_2eproto::offsets,
@@ -446,6 +449,7 @@ MountRequest::MountRequest(const MountRequest& from)
   new (&_impl_) Impl_{
       decltype(_impl_.disk_image_){}
     , decltype(_impl_.enable_cache_){}
+    , decltype(_impl_.cache_blocks_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -457,7 +461,9 @@ MountRequest::MountRequest(const MountRequest& from)
     _this->_impl_.disk_image_.Set(from._internal_disk_image(), 
       _this->GetArenaForAllocation());
   }
-  _this->_impl_.enable_cache_ = from._impl_.enable_cache_;
+  ::memcpy(&_impl_.enable_cache_, &from._impl_.enable_cache_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.cache_blocks_) -
+    reinterpret_cast<char*>(&_impl_.enable_cache_)) + sizeof(_impl_.cache_blocks_));
   // @@protoc_insertion_point(copy_constructor:fs.MountRequest)
 }
 
@@ -468,6 +474,7 @@ inline void MountRequest::SharedCtor(
   new (&_impl_) Impl_{
       decltype(_impl_.disk_image_){}
     , decltype(_impl_.enable_cache_){false}
+    , decltype(_impl_.cache_blocks_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
   _impl_.disk_image_.InitDefault();
@@ -501,7 +508,9 @@ void MountRequest::Clear() {
   (void) cached_has_bits;
 
   _impl_.disk_image_.ClearToEmpty();
-  _impl_.enable_cache_ = false;
+  ::memset(&_impl_.enable_cache_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.cache_blocks_) -
+      reinterpret_cast<char*>(&_impl_.enable_cache_)) + sizeof(_impl_.cache_blocks_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -525,6 +534,14 @@ const char* MountRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           _impl_.enable_cache_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 cache_blocks = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          _impl_.cache_blocks_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -574,6 +591,12 @@ uint8_t* MountRequest::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteBoolToArray(2, this->_internal_enable_cache(), target);
   }
 
+  // int32 cache_blocks = 3;
+  if (this->_internal_cache_blocks() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(3, this->_internal_cache_blocks(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -602,6 +625,11 @@ size_t MountRequest::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
+  // int32 cache_blocks = 3;
+  if (this->_internal_cache_blocks() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_cache_blocks());
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -626,6 +654,9 @@ void MountRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
   if (from._internal_enable_cache() != 0) {
     _this->_internal_set_enable_cache(from._internal_enable_cache());
   }
+  if (from._internal_cache_blocks() != 0) {
+    _this->_internal_set_cache_blocks(from._internal_cache_blocks());
+  }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -649,7 +680,12 @@ void MountRequest::InternalSwap(MountRequest* other) {
       &_impl_.disk_image_, lhs_arena,
       &other->_impl_.disk_image_, rhs_arena
   );
-  swap(_impl_.enable_cache_, other->_impl_.enable_cache_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(MountRequest, _impl_.cache_blocks_)
+      + sizeof(MountRequest::_impl_.cache_blocks_)
+      - PROTOBUF_FIELD_OFFSET(MountRequest, _impl_.enable_cache_)>(
+          reinterpret_cast<char*>(&_impl_.enable_cache_),
+          reinterpret_cast<char*>(&other->_impl_.enable_cache_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata MountRequest::GetMetadata() const {

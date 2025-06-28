@@ -4,6 +4,9 @@
 #include <iostream>
 #include <chrono>
 #include <random>
+#include <vector>
+#include <iomanip>
+#include <cmath>
 
 using grpc::Channel;
 using grpc::ClientContext;
@@ -23,20 +26,24 @@ using fs::ReadResponse;
 class FSClient {
   std::unique_ptr<FileSystem::Stub> stub_;
 public:
-  FSClient(std::shared_ptr<Channel> ch) : stub_(FileSystem::NewStub(ch)) {}
+  FSClient(std::shared_ptr<Channel> ch)
+    : stub_(FileSystem::NewStub(ch)) {}
 
-  int Mount(const std::string& img, bool use_cache = true) {
-    MountRequest req; req.set_disk_image(img); req.set_enable_cache(use_cache);
-    MountResponse res; ClientContext ctx;
+  int Mount(const std::string& img, bool use_cache, int cache_blocks = 0) {
+    MountRequest req;
+    req.set_disk_image(img);
+    req.set_enable_cache(use_cache);
+    req.set_cache_blocks(cache_blocks);
+    MountResponse res;
+    ClientContext ctx;
     stub_->Mount(&ctx, req, &res);
     return res.mount_id();
   }
 
-  int Create(int mid, const std::string& path) {
+  void Create(int mid, const std::string& path) {
     FileRequest req; req.set_mount_id(mid); req.set_path(path);
     CreateResponse res; ClientContext ctx;
     stub_->Create(&ctx, req, &res);
-    return res.inum();
   }
 
   int Open(int mid, const std::string& path) {
@@ -55,53 +62,87 @@ public:
     stub_->Write(&ctx, req, &res);
   }
 
-  void Read(int mid, int fd, int nbytes) {
+  std::string Read(int mid, int fd, int nbytes) {
     ReadRequestMulti req;
     req.set_mount_id(mid);
     req.set_fd(fd);
     req.set_num_bytes(nbytes);
     ReadResponse res; ClientContext ctx;
     stub_->Read(&ctx, req, &res);
+    return res.data();
   }
 };
 
-void run_benchmark(bool use_cache, const std::string& disk_image) {
-  auto channel = grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials());
-  FSClient client(channel);
-
-  int mid = client.Mount(disk_image, use_cache);
-  client.Create(mid, "/bench.txt");
-  int fd = client.Open(mid, "/bench.txt");
-
-  std::string data(4096, 'A');
-  int ops = 100000;
-
-  auto start = std::chrono::high_resolution_clock::now();
-
-  for (int i = 0; i < ops; ++i) {
-    if (i % 2 == 0) {
-        client.Write(mid, fd, data);
-        //std::cout<<use_cache<<" "<<"write "<<i<<"\n";
-    }
-    else {
-        client.Read(mid, fd, 4096);
-        //std::cout<<use_cache<<" "<<"read "<<i<<"\n";
-    }
-  }
-
-  auto end = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-
-  std::cout << (use_cache ? "[With Cache] " : "[No Cache] ")
-            << "Total time for " << ops << " operations: " << duration << " ms\n";
+// Simple timer helper
+static double timed_run(std::function<void()> fn) {
+    auto start = std::chrono::high_resolution_clock::now();
+    fn();
+    auto end = std::chrono::high_resolution_clock::now();
+    return std::chrono::duration<double>(end - start).count();
 }
 
 int main() {
-  std::cout << "Running benchmark without cache...\n";
-  run_benchmark(false, "disk_nocache.img");
+    const std::string disk = "disk_benchmark.img";
+    const int NUM_OPS = 50000;
+    const int BLOCK_SIZE = 4096;
+    const int SMALL_IO = 512;
+    const int LARGE_IO = 16384;
+    
+    FSClient client(grpc::CreateChannel(
+        "localhost:50051", grpc::InsecureChannelCredentials()));
 
-  std::cout << "Running benchmark with cache...\n";
-  run_benchmark(true, "disk_cache.img");
+    struct Pattern {
+        std::string name;
+        bool use_cache;
+        int cache_blocks;
+        int io_size;
+        bool sequential;
+    };
 
-  return 0;
+    std::vector<Pattern> tests = {
+        {"ColdRandom512", false, 0, SMALL_IO, false},
+        {"WarmRandom512",  true, 1024, SMALL_IO, false},
+        {"ColdSeq4K",    false, 0, BLOCK_SIZE, true},
+        {"WarmSeq4K",    true, 1024, BLOCK_SIZE, true},
+        {"ColdSeq16K",   false, 0, LARGE_IO, true},
+        {"WarmSeq16K",   true, 1024, LARGE_IO, true}
+    };
+
+    std::cout << std::fixed << std::setprecision(3);
+    std::cout << "Test           Time(s)\n";
+    for (auto &p : tests) {
+        int mid = client.Mount(disk, p.use_cache, p.cache_blocks);
+        client.Create(mid, "/bench.txt");
+        int fd = client.Open(mid, "/bench.txt");
+
+        int total_ops = NUM_OPS;
+        std::string buf(p.io_size, 'X');
+        std::mt19937_64 rng(42);
+        std::uniform_int_distribution<int> dist(0, 1023);
+
+        double t = timed_run([&]{
+            for (int i = 0; i < total_ops; ++i) {
+                int offset_index = p.sequential ? (i % 1024) : dist(rng);
+                // Use file offset via repeated writes or reads
+                if (i & 1) {
+                    client.Read(mid, fd, p.io_size);
+                } else {
+                    client.Write(mid, fd, buf);
+                }
+            }
+        });
+
+        std::cout << std::setw(12) << p.name << " "
+                  << std::setw(7) << t << "\n";
+    }
+
+    // Theoretical speedup calculation:
+    // Assume disk I/O ~5ms per block vs mem ~0.1ms
+    double disk_ms = 5.0;
+    double mem_ms  = 0.1;
+    double speedup = disk_ms / mem_ms;
+    std::cout << "\nTheoretical max speedup (disk vs mem): "
+              << speedup << "x" << std::endl;
+
+    return 0;
 }

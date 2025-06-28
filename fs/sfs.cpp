@@ -175,40 +175,51 @@ int sfs_read(FSContext &ctx, int fd, char* buf, int size) {
 }
 
 int sfs_write(FSContext &ctx, int fd, const char* buf, int size) {
+    // 1) Validate FD
     auto it = ctx.fd_table.find(fd);
     if (it == ctx.fd_table.end()) return -1;
-    
     OpenFile &of = it->second;
-    Inode ino{};
+
+    // 2) Load inode
+    Inode ino;
     if (!inode_read(ctx, of.inum, ino)) return -1;
+
     int total = 0;
+    const int BLOCK = BLOCK_SIZE;  // your constant for block size
+
     while (total < size) {
-        int block_idx = of.offset / BLOCK_SIZE;
-        int inner_offset = of.offset % BLOCK_SIZE;
-        int block_no = get_data_block_index(ctx, ino, block_idx, true);
-        if (block_no == 0) return -1;
+        // 3) Compute which block and offset inside it
+        int block_idx    = of.offset / BLOCK;
+        int inner_offset = of.offset % BLOCK;
+        int block_no     = get_data_block_index(ctx, ino, block_idx, /*allocate=*/true);
+        if (block_no <= 0 || NUM_BLOCKS) return -1;
 
-        char blockBuf[BLOCK_SIZE];
-        //if (!ctx.disk.disk_read(block_no, blockBuf)) return -1;
+        // 4) Read the entire block into a local buffer
+        std::vector<char> blockBuf(BLOCK);
         if (ctx.use_cache) {
-            auto& data = ctx.cache_controller->getBlock(block_no);
-            std::memcpy(blockBuf, data.data(), BLOCK_SIZE);
+            const auto &cached = ctx.cache_controller->getBlock(block_no);
+            std::memcpy(blockBuf.data(), cached.data(), BLOCK);
         } else {
-            if (!ctx.disk->disk_read(block_no, blockBuf)) return -1;
+            if (!ctx.disk->disk_read(block_no, blockBuf.data())) return -1;
         }
 
-        int chunk = std::min(size - total, BLOCK_SIZE - inner_offset);
-        std::memcpy(blockBuf + inner_offset, buf + total, chunk);
-        //ctx.disk.disk_write(block_no, blockBuf);
+        // 5) Copy just the requested bytes
+        int chunk = std::min(size - total, BLOCK - inner_offset);
+        std::memcpy(blockBuf.data() + inner_offset, buf + total, chunk);
+
+        // 6) Write back
         if (ctx.use_cache) {
-            ctx.cache_controller->writeBlock(block_no, blockBuf);
+            ctx.cache_controller->writeBlock(block_no, blockBuf.data());
         } else {
-            ctx.disk->disk_write(block_no, blockBuf);
+            if (!ctx.disk->disk_write(block_no, blockBuf.data())) return -1;
         }
+
         of.offset += chunk;
-        total += chunk;
+        total     += chunk;
     }
-    ino.size = std::max((uint32_t)of.offset, ino.size);
+
+    // 7) Update file size if grown
+    ino.size = std::max<uint32_t>(ino.size, of.offset);
     inode_write(ctx, of.inum, ino);
     return total;
 }

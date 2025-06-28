@@ -231,6 +231,7 @@ class MountRequest final :
   enum : int {
     kDiskImageFieldNumber = 1,
     kEnableCacheFieldNumber = 2,
+    kCacheBlocksFieldNumber = 3,
   };
   // string disk_image = 1;
   void clear_disk_image();
@@ -255,6 +256,15 @@ class MountRequest final :
   void _internal_set_enable_cache(bool value);
   public:
 
+  // int32 cache_blocks = 3;
+  void clear_cache_blocks();
+  int32_t cache_blocks() const;
+  void set_cache_blocks(int32_t value);
+  private:
+  int32_t _internal_cache_blocks() const;
+  void _internal_set_cache_blocks(int32_t value);
+  public:
+
   // @@protoc_insertion_point(class_scope:fs.MountRequest)
  private:
   class _Internal;
@@ -265,6 +275,7 @@ class MountRequest final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr disk_image_;
     bool enable_cache_;
+    int32_t cache_blocks_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -2535,6 +2546,26 @@ inline void MountRequest::_internal_set_enable_cache(bool value) {
 inline void MountRequest::set_enable_cache(bool value) {
   _internal_set_enable_cache(value);
   // @@protoc_insertion_point(field_set:fs.MountRequest.enable_cache)
+}
+
+// int32 cache_blocks = 3;
+inline void MountRequest::clear_cache_blocks() {
+  _impl_.cache_blocks_ = 0;
+}
+inline int32_t MountRequest::_internal_cache_blocks() const {
+  return _impl_.cache_blocks_;
+}
+inline int32_t MountRequest::cache_blocks() const {
+  // @@protoc_insertion_point(field_get:fs.MountRequest.cache_blocks)
+  return _internal_cache_blocks();
+}
+inline void MountRequest::_internal_set_cache_blocks(int32_t value) {
+  
+  _impl_.cache_blocks_ = value;
+}
+inline void MountRequest::set_cache_blocks(int32_t value) {
+  _internal_set_cache_blocks(value);
+  // @@protoc_insertion_point(field_set:fs.MountRequest.cache_blocks)
 }
 
 // -------------------------------------------------------------------
