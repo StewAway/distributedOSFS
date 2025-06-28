@@ -1,6 +1,7 @@
 #include "stat.h"
 #include "fs_context.h"
 #include "inode.h"
+#include "block_cache_controller.h"
 #include <vector>
 #include <cstring>
 
@@ -28,7 +29,13 @@ bool inode_read(FSContext &ctx, int inum, Inode &out) {
     int block = 1 + (inum / INODES_PER_BLOCK);
     int off = inum % INODES_PER_BLOCK;
     std::vector<char> buf(BLOCK_SIZE);
-    if (!ctx.disk.disk_read(block, buf.data())) return false;
+    //if (!ctx.disk.disk_read(block, buf.data())) return false;
+    if (ctx.use_cache) {
+        auto& data = ctx.cache_controller->getBlock(block);
+        std::memcpy(buf.data(), data.data(), BLOCK_SIZE);
+    } else {
+        if (!ctx.disk->disk_read(block, buf.data())) return false;
+    }
     std::memcpy(&out, buf.data() + off * sizeof(Inode), sizeof(Inode));
     return true;
 }
@@ -38,9 +45,19 @@ bool inode_write(FSContext &ctx, int inum, const Inode &in) {
     int block = 1 + (inum / INODES_PER_BLOCK);
     int off = inum % INODES_PER_BLOCK;
     std::vector<char> buf(BLOCK_SIZE);
-    ctx.disk.disk_read(block, buf.data());
+    //ctx.disk.disk_read(block, buf.data());
+    if (ctx.use_cache) {
+        auto& data = ctx.cache_controller->getBlock(block);
+        std::memcpy(buf.data(), data.data(), BLOCK_SIZE);
+    } else {
+        ctx.disk->disk_read(block, buf.data());
+    }
     std::memcpy(buf.data() + off * sizeof(Inode), &in, sizeof(Inode));
-    return ctx.disk.disk_write(block, buf.data());
+    if (ctx.use_cache) {
+        ctx.cache_controller->writeBlock(block, buf.data());
+        return true;
+    }
+    return ctx.disk->disk_write(block, buf.data());
 }
 
 int inode_alloc(FSContext &ctx) {
