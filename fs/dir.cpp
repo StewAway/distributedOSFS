@@ -3,6 +3,7 @@
 #include "fs_context.h"
 #include "inode.h"
 #include "block_manager.h"
+#include "block_cache_controller.h"
 
 struct DirEntry {
     int inum;
@@ -18,7 +19,13 @@ int dir_lookup(FSContext &ctx, int dir_inum, const std::string &name) {
     // Search in direct blocks
     for (int i = 0; i < NDIRECT; ++i) {
         if (dir_inode.direct[i] == 0) continue;
-        if (!ctx.disk.disk_read(dir_inode.direct[i], block)) return false;
+        //if (!ctx.disk.disk_read(dir_inode.direct[i], block)) return false;
+        if (ctx.use_cache) {
+            auto& data = ctx.cache_controller->getBlock(ctx.mount_id, block
+        } else {
+        
+        }
+        
 
         DirEntry* entries = (DirEntry*) block;
         int num_entries = BLOCK_SIZE / sizeof(DirEntry);

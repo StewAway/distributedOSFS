@@ -61,7 +61,7 @@ public:
         if (ctx.use_cache) {
             const size_t block_size = BLOCK_SIZE;
             const size_t cache_blocks = CACHE_NUM_BLOCKS;
-            ctx->init_cahce(cache_blocks, block_size);
+            ctx->init_cache(cache_blocks, block_size);
         } 
         contexts_[id] = std::move(ctx);
         res->set_mount_id(id);

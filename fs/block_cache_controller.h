@@ -12,7 +12,7 @@ class Disk; // foward declare for disk I/O
 
 class BlockCacheController {
 public:
-    using BlockKey = std::pair<uint64_t, uint64_t>; // (mount_id, block_num)
+    using BlockKey = uint64_t; // block_num
 
     struct BlockEntry {
         std::vector<char> data;
@@ -21,9 +21,9 @@ public:
 
     BlockCacheController(size_t capacity_blocks, size_t block_size, std::shared_ptr<Disk> disk);
 
-    const std::vector<char>& getBlock(uint64_t mount_id, uint64_t block_num);
+    const std::vector<char>& getBlock(uint64_t block_num);
 
-    void writeBlock(uint64_t mount_id, uint64_t block_num, const char* buf);
+    void writeBlock(uint64_t block_num, const char* buf);
 
     void flushAll();
 

@@ -10,8 +10,8 @@ BlockCacheController::BlockCacheController(
     disk_(disk),
     cache_(capacity_blocks) {}
 
-const std::vector<char>& BlockCacheController:getBlock(uint64_t mount_id, uint64_t block_num) {
-    BlockKey key = {mount_id, block_num};
+const std::vector<char>& BlockCacheController:getBlock(uint64_t block_num) {
+    BlockKey key = block_num;
     if (cache_.contains(key)) {
         return cache_.get(key).data;
     }
@@ -28,11 +28,11 @@ const std::vector<char>& BlockCacheController:getBlock(uint64_t mount_id, uint64
 }
 
 void BlockCacheController::writeBLock(uint64_t mount_id, uint64_t block_num, const char* buf) {
-    BlockKey key = {mount_id, block_num};
+    BlockKey key = block_num;
     if (!cache_.contains(key)) {
         std::vector<char> tmp(block_size_);
         disk_->disk_read(block_num, tmp.data());
-        cache_.put(key, BlockEntry{std::move(tmp, false});
+        cache_.put(key, BlockEntry{std::move(tmp), false});
     }
 
     BlockEntry& entry = cache_.get(key);
@@ -42,7 +42,7 @@ void BlockCacheController::writeBLock(uint64_t mount_id, uint64_t block_num, con
 }
 
 void BlockCacheController::flushEntry(const BlockKey& key, const BlockEntry& entry) {
-    disk_->disk_write(key.second, entry.data.data());
+    disk_->disk_write(key, entry.data.data());
 }
 
 void BlockCacheController::evictIfNeeded() {
