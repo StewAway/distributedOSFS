@@ -138,7 +138,7 @@ make         # builds fs_server, core_kv_server, benchmarks, etc.
     ├── dir.h/.cpp
     ├── disk.h/.cpp
     ├── block_manager.h/.cpp
-    ├── lru_block_cache.h/.cpp  # your cache layer
+    ├── lru_block_cache.h/.cpp
     └── benchmarks/
         └── sfs_benchmark.cpp
 
